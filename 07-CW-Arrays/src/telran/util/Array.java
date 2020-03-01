@@ -4,43 +4,25 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Predicate;
 
-
-
-
 public class Array {
-	
 private Object[] array;
-private int size = 0;  // это реальное кол-во жлементов в массиве
-
-
+private int size = 0;
 public Array(int capacity) {
 	array = new Object[capacity];
 }
-
-
-
 public Array() {
 	this(16);
 }
-
-
-
 public void add(Object obj) {
 	if (size == array.length) {
 		allocateArray();
 	}
 	array[size++] = obj;
 }
-
-
-
 private void allocateArray() {
 	array = Arrays.copyOf(array, array.length * 2);
 	
 }
-
-
-
 public Object get(int index) {
 	Object res = null;
 	if (index >= 0 && index < size) {
@@ -48,15 +30,9 @@ public Object get(int index) {
 	}
 	return res;
 }
-
-
 public int size() {
 	return size;
 }
-
-
-
-
 /**
  * adds an object at a specified index
  * @param index
@@ -77,10 +53,6 @@ public boolean add(int index, Object obj) {
 	}
 	return res;
 }
-
-
-
-
 /**
  * removes the object at a specified index
  * @param index
@@ -102,8 +74,6 @@ public Object remove(int index) {
 	}
 	return res;
 }
-
-
 /**
  * sets new object at a specified index
  * @param index
@@ -119,20 +89,9 @@ public Object set(int index, Object obj) {
 	}
 	return res;
 }
-
-
-
-
-
 private boolean isIndexValid(int index) {
 	return index >= 0 && index < size;
 }
-
-
-
-
-
-
 public int indexOf(Object pattern) {
 	int res = -1;
 	if (pattern != null) {
@@ -146,11 +105,6 @@ public int indexOf(Object pattern) {
 	return res;
 	
 }
-
-
-
-
-
 public int lastIndexOf(Object pattern) {
 	int res = -1;
 	if (pattern != null) {
@@ -164,11 +118,6 @@ public int lastIndexOf(Object pattern) {
 	return res;
 	
 }
-
-
-
-
-
 public int binarySearch(Object pattern, Comparator<Object> comp) {
 	int left = 0; 
 	int right = size - 1;
@@ -183,13 +132,6 @@ public int binarySearch(Object pattern, Comparator<Object> comp) {
 	}
 	return left > right ? -(left + 1) : middle;
 }
-
-
-
-
-
-
-
 /**
  * the same binary search but based on Comparable<Object>
  *  rather than Comparator<Object>
@@ -200,10 +142,6 @@ public int binarySearch(Object pattern) {
 	
 	return binarySearch(pattern, new ComparatorComparable());
 }
-
-
-
-
 /**
  * sorting based on Comparator<Object>
  * in the meantime the simple bubble sort that we did at class
@@ -230,10 +168,6 @@ public void sort(Comparator<Object> comp) {
 	
 }
 
-
-
-
-
 /**
  * sorting based on Comparable<Object>
  */
@@ -257,10 +191,6 @@ public void sort() {
 //		
 //	}while (!flSort);
 }
-
-
-
-
 public Array filter (Predicate<Object> predicate) {
 	Array res = new Array();
 	for (int i = 0; i < size; i++) {
@@ -270,44 +200,24 @@ public Array filter (Predicate<Object> predicate) {
 	}
 	return res;
 }
-
-
-
-
-
-
-
 /**
  * removes objects matching the given predicate
  * @param predicate
  * @return true if at least one object has been removed
  */
 public boolean removeIf(Predicate<Object> predicate) {
-	System.out.println("запуск boolean removeIf");
-	
-	
-//Array	res = new Array();
-//for (int i=0; i < 0; i++) {
-//	if (!predicate.test(array[i])) {
-//		res.add(array[i]);
+	 Array res = filter(predicate.negate());
+//	Array res = new Array();
+//	for (int i = 0; i < size; i++) {
+//		if (!predicate.test(array[i])) {
+//			res.add(array[i]);
+//		}
 //	}
-//}
-//	
 	int original = size;
-//	array=
-	
-	
+	array = res.array;
+	size = res.size;
 	return size < original;
-	
 }
-
-
-
-
-
-
-
-
 
 
 }

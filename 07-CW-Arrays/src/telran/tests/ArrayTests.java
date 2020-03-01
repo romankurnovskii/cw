@@ -116,25 +116,18 @@ class ArrayTests {
 		int actualNumbers[] = getActualNumbers(arrayNoEven);
 		assertArrayEquals(expected, actualNumbers);
 	}
-
-
-	
-	
-	
-	
-	
-	
-//	@Test
-//	public void testRemoveIf()
-//	{
-//		Array array = getArray();
-//		assertTrue(array.removeIf(new EvenNumbersPredicate()));	
-//		
-//	}
-//	
-	
-	
-	
+	@Test
+	void testRemoveIf() {
+		Array array = getArray(); 
+		//{10, -8, 70, 75, 30};
+		array.add(75);
+		int expected[] = {75, 75};
+		EvenNumbersPredicate predicateEven = new EvenNumbersPredicate();
+		assertTrue(array.removeIf(predicateEven));
+		assertFalse(array.removeIf(predicateEven));
+		assertArrayEquals(expected,
+				getActualNumbers(array));
+	}
 	@Test
 	/**
 	 * additional test for sorting array numbers according to the following
@@ -143,17 +136,14 @@ class ArrayTests {
 	 * even numbers should be sorted in the descending order
 	 */
 	void testSortingEvenOdd( ) {
-		//TODO
+		Array array = getArray();
+		// {10, -8, 70, 75, 30}
+		array.add(73);
+		array.add(3);
+		int []expected = {3, 73, 75, 70, 30, 10, -8};
+		array.sort(new EvenOddComparator());
+		assertArrayEquals(expected,
+				getActualNumbers(array));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

@@ -2,61 +2,40 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 
-
-
-public class Array {
-	
+@SuppressWarnings("unchecked")
+public  class Array<T> implements IndexedList<T> {
 private Object[] array;
-private int size = 0;  // это реальное кол-во жлементов в массиве
-
-
+private int size = 0;
 public Array(int capacity) {
 	array = new Object[capacity];
 }
-
-
-
 public Array() {
 	this(16);
 }
-
-
-
-public void add(Object obj) {
+public void add(T obj) {
 	if (size == array.length) {
 		allocateArray();
 	}
 	array[size++] = obj;
 }
-
-
-
 private void allocateArray() {
 	array = Arrays.copyOf(array, array.length * 2);
 	
 }
-
-
-
-public Object get(int index) {
-	Object res = null;
+public T get(int index) {
+	T res = null;
 	if (index >= 0 && index < size) {
-		res = array[index];
+		res = (T)array[index];
 	}
 	return res;
 }
-
-
 public int size() {
 	return size;
 }
-
-
-
-
 /**
  * adds an object at a specified index
  * @param index
@@ -64,7 +43,7 @@ public int size() {
  * @return true if index value in the range [0 - size]
  *  (size included) otherwise false
  */
-public boolean add(int index, Object obj) {
+public boolean add(int index, T obj) {
 	boolean res = false;
 	if (index >= 0 && index <= size) {
 		if (size == array.length) {
@@ -77,10 +56,6 @@ public boolean add(int index, Object obj) {
 	}
 	return res;
 }
-
-
-
-
 /**
  * removes the object at a specified index
  * @param index
@@ -102,8 +77,6 @@ public Object remove(int index) {
 	}
 	return res;
 }
-
-
 /**
  * sets new object at a specified index
  * @param index
@@ -111,7 +84,7 @@ public Object remove(int index) {
  * @return old reference to the object or null in the case of
  * wrong index value
  */
-public Object set(int index, Object obj) {
+public Object set(int index, T obj) {
 	Object res = null;
 	if (isIndexValid(index)) {
 		res = array[index];
@@ -119,20 +92,9 @@ public Object set(int index, Object obj) {
 	}
 	return res;
 }
-
-
-
-
-
 private boolean isIndexValid(int index) {
 	return index >= 0 && index < size;
 }
-
-
-
-
-
-
 public int indexOf(Object pattern) {
 	int res = -1;
 	if (pattern != null) {
@@ -146,11 +108,6 @@ public int indexOf(Object pattern) {
 	return res;
 	
 }
-
-
-
-
-
 public int lastIndexOf(Object pattern) {
 	int res = -1;
 	if (pattern != null) {
@@ -164,17 +121,12 @@ public int lastIndexOf(Object pattern) {
 	return res;
 	
 }
-
-
-
-
-
-public int binarySearch(Object pattern, Comparator<Object> comp) {
+public int binarySearch(T pattern, Comparator<T> comp) {
 	int left = 0; 
 	int right = size - 1;
 	int middle = (left + right) / 2;
 	while (left <= right && !pattern.equals(array[middle])) {
-		if (comp.compare(pattern, array[middle]) < 0) {
+		if (comp.compare(pattern, (T)array[middle]) < 0) {
 			right = middle - 1;
 		} else {
 			left = middle + 1;
@@ -183,41 +135,30 @@ public int binarySearch(Object pattern, Comparator<Object> comp) {
 	}
 	return left > right ? -(left + 1) : middle;
 }
-
-
-
-
-
-
-
 /**
  * the same binary search but based on Comparable<Object>
  *  rather than Comparator<Object>
  * @param pattern
  * @return
  */
-public int binarySearch(Object pattern) {
+public int binarySearch(T pattern) {
 	
-	return binarySearch(pattern, new ComparatorComparable());
+	return binarySearch(pattern, (Comparator<T>)Comparator.naturalOrder());
 }
-
-
-
-
 /**
  * sorting based on Comparator<Object>
  * in the meantime the simple bubble sort that we did at class
  * may be applied O[N^2]
  * @param comp
  */
-public void sort(Comparator<Object> comp) {
+public void sort(Comparator<T> comp) {
 	boolean flSort = false;
 	int length = size;
 	do {
 		flSort = true;
 		length--;
 		for (int i = 0; i < length; i++) {
-			if (comp.compare(array[i], array[i + 1]) > 0) {
+			if (comp.compare((T)array[i], (T)array[i + 1]) > 0) {
 				Object tmp = array[i];
 				array[i] = array[i + 1];
 				array[i + 1] = tmp;
@@ -230,15 +171,12 @@ public void sort(Comparator<Object> comp) {
 	
 }
 
-
-
-
-
 /**
- * sorting based on Comparable<Object>
+ * sorting based on Comparable<T>
  */
 public void sort() {
-	sort(new ComparatorComparable());
+	sort((Comparator<T>)Comparator.naturalOrder());
+	
 	//below the code with no ComparatorComparable
 //	boolean flSort = false;
 //	int length = size;
@@ -258,15 +196,44 @@ public void sort() {
 //	}while (!flSort);
 }
 
-
-
-
-public Array filter (Predicate<Object> predicate) {
-	Array res = new Array();
+public Array<T> filter (Predicate<T> predicate) {
+	Array<T> res = new Array();
 	for (int i = 0; i < size; i++) {
-		if (predicate.test(array[i])) {
-			res.add(array[i]);
+		if (predicate.test((T)array[i])) {
+			res.add((T)array[i]);
 		}
+	}
+	return res;
+}
+/**
+ * removes objects matching the given predicate
+ * @param predicate
+ * @return true if at least one object has been removed
+ */
+public boolean removeIf(Predicate<T> predicate) {
+	 Array<T> res = filter(predicate.negate());
+//	Array res = new Array();
+//	for (int i = 0; i < size; i++) {
+//		if (!predicate.test(array[i])) {
+//			res.add(array[i]);
+//		}
+//	}
+	int original = size;
+	array = res.array;
+	size = res.size;
+	return size < original;
+}
+/**
+ * removing first occurrence of an object equaled to
+ * the given pattern
+ * @param pattern
+ * @return
+ */
+public Object remove(Object pattern) {
+	Object res = null;
+	int ind = indexOf(pattern);
+	if (ind >= 0) {
+		res = remove(ind);
 	}
 	return res;
 }
@@ -275,39 +242,27 @@ public Array filter (Predicate<Object> predicate) {
 
 
 
+private class ArrayIterator implements Iterator<T>{
+int currentIndex = 0; //текущий изначально равен нулю
 
+	@Override
+	public boolean hasNext() {
+		return currentIndex < size;
+	}
 
-/**
- * removes objects matching the given predicate
- * @param predicate
- * @return true if at least one object has been removed
- */
-public boolean removeIf(Predicate<Object> predicate) {
-	System.out.println("запуск boolean removeIf");
-	
-	
-//Array	res = new Array();
-//for (int i=0; i < 0; i++) {
-//	if (!predicate.test(array[i])) {
-//		res.add(array[i]);
-//	}
-//}
-//	
-	int original = size;
-//	array=
-	
-	
-	return size < original;
+	@Override
+	public T next() {
+		return (T) array[currentIndex++];
+	}
 	
 }
 
 
-
-
-
-
-
-
+@Override
+public Iterator<T> iterator() {
+	// TODO Auto-generated method stub
+	return new ArrayIterator();
+}
 
 
 }

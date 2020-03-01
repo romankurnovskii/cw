@@ -6,8 +6,6 @@ public class Person implements Comparable<Object>{
 private long id;
 private String name;
 private int birthYear;
-
-
 public Person() {
 	
 }
