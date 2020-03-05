@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 public interface IndexedList<T> extends Iterable<T>{
 
 
-void add(T obj);  //T теперь араметризован потмоучто в 3 строчке мы его описали в <>
+void add(T obj);  //T теперь параметризован потмоучто в 3 строчке мы его описали в <>
 boolean add(int ind, T obj); //добавляет объект T по индексу ind	
 int binarySearch(T pattern); //искать по образцу и подобию, здесь предполагаем что массив отсортрвоан по компэрэбл
 int binarySearch(T pattern,Comparator<T> comp); //если множетсво отсортирвоано в натуральном порядке(если порядок 

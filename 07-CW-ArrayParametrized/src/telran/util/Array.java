@@ -191,8 +191,7 @@ public void sort() {
 //				flSort = false;
 //			}
 //		}
-//		
-//		
+//				
 //	}while (!flSort);
 }
 
@@ -237,11 +236,6 @@ public Object remove(Object pattern) {
 	}
 	return res;
 }
-
-
-
-
-
 private class ArrayIterator implements Iterator<T>{
 int currentIndex = 0; //текущий изначально равен нулю
 
@@ -253,6 +247,13 @@ int currentIndex = 0; //текущий изначально равен нулю
 	@Override
 	public T next() {
 		return (T) array[currentIndex++];
+	}
+	
+	@Override
+	public void remove() {
+		// вызываю метдо ремув по индексу но в соотв с тестом сначала мы делаем некст а потом длеаем ремув
+		// препдолагается удлаение предыдущего элементо( перед тем как мы делали некст
+		Array.this.remove(--currentIndex); // удаляю предудущий тот который был в некст
 	}
 	
 }
