@@ -206,7 +206,7 @@ public Array filter (Predicate<Object> predicate) {
  * @return true if at least one object has been removed
  */
 public boolean removeIf(Predicate<Object> predicate) {
-	 Array res = filter(predicate.negate());
+	Array res = filter(predicate.negate());
 //	Array res = new Array();
 //	for (int i = 0; i < size; i++) {
 //		if (!predicate.test(array[i])) {

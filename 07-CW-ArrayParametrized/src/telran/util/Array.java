@@ -236,6 +236,8 @@ public Object remove(Object pattern) {
 	}
 	return res;
 }
+
+
 private class ArrayIterator implements Iterator<T>{
 int currentIndex = 0; //текущий изначально равен нулю
 

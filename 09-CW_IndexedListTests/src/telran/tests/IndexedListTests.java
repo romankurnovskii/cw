@@ -207,23 +207,34 @@ class IndexedListTests {
 	  listNumbers.add(77);  // вот эти 3 добавления не выполнят тест как хотим т к будут стоять в разных местах
 	  listNumbers.add(78);
 	  listNumbers.add(88);
-	  int Expected[] = {-8, 75};
-	  for (Integer num: listNumbers) { 
-		  if  ( num > 0 && num % 2 == 0 ) {   // если число больше нуля и от остатка ноль
-			  listNumbers.remove(num);  			//удаляю уже напсианным методом
-		  }
-			  
-	  }
-		 assertArrayEquals(Expected, getActualNumbers(listNumbers));  //getActualNumbers - писали этот метод чтобы он вывел массив
-}
- /* 
-  * этот тест работает НО не сработает если мы добавим утда
-  * часть чисел т к ф-я ремув работает не так как надо здесь
-  * ЗАДАЧА НАПИСАТЬ МЕТОД РЕМУВ КОТОРЫЙ ПРАВИЛЬНО УДАЛЯЕТ ИЗ МАССИВА И 
-  * КОРРЕКТИРУТ ПРАИВЛЬНО САМ МАССИВ В КЛАССЕ ИНДЕКС
-  */
+	  int Expected[] = {-8, 75, 77};
+
+	  // ш need to improve it
+//	  for (Integer num: listNumbers) { 
+//		  if  ( num > 0 && num % 2 == 0 ) {   // если число больше нуля и от остатка ноль
+//			  listNumbers.remove(num);  			//удаляю уже напсианным методом
+//		  }
+//			  
+//	  }
+
+		// Added remove method to the Iterator
+			Iterator<Integer> it = listNumbers.iterator();
+			while(it.hasNext()) {
+				Integer num = it.next();
+				if(num>= 0 && num % 2 ==0) {
+					it.remove();
+				}
+			}
+			
+			
+	assertArrayEquals(Expected, getActualNumbers(listNumbers));  //getActualNumbers - писали этот метод чтобы он вывел массив
+
+			
+			
+ }
+
  
- 
+	
  
  
 

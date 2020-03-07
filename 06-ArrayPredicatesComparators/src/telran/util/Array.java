@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.function.Predicate;
 
 
-
-
 public class Array {
 	
 private Object[] array;
@@ -283,26 +281,18 @@ public Array filter (Predicate<Object> predicate) {
  * @return true if at least one object has been removed
  */
 public boolean removeIf(Predicate<Object> predicate) {
+	
 	System.out.println("запуск boolean removeIf");
-	
-	
-//Array	res = new Array();
-//for (int i=0; i < 0; i++) {
-//	if (!predicate.test(array[i])) {
-//		res.add(array[i]);
-//	}
-//}
-//	
-	int original = size;
-//	array=
-	
-	
-	return size < original;
-	
+	boolean res = false;
+	for (int i = 0; i < size; i++) {
+		if(predicate.test(array[i])) {
+//			this.remove(i); // Short decision
+			System.arraycopy(array, i + 1, array, i, size - i - 1);
+			res = true;
+		}
+	}
+	return res;
 }
-
-
-
 
 
 
