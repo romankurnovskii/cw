@@ -7,10 +7,18 @@ import java.util.function.Predicate;
 
 public class IndexedLinkedList<T> implements IndexedList<T>{
 	
+	
+private Node<T> head;
+private Node<T> tail;
+private int size;
+	
+	
 private static class Node<T> {
 	public T obj;
 	public Node<T> next;
 	public Node<T> prev;
+	
+	
 	public Node(T obj) {
 		this.obj = obj;
 	}
@@ -38,7 +46,6 @@ private class ListIterator implements Iterator<T> {
 	public void remove() {
 		if (current == null) {
 			removeTail();
-			
 		}
 		else {
 			removeNode(current.prev);
@@ -51,9 +58,7 @@ private class ListIterator implements Iterator<T> {
 
 
 
-private Node<T> head;
-private Node<T> tail;
-private int size;
+
 
 
 
@@ -66,6 +71,9 @@ public IndexedLinkedList() {
 public IndexedLinkedList(int dummy) {
 	
 }
+
+
+
 	@Override
 	public Iterator<T> iterator() {
 		// TODO Auto-generated method stub
@@ -85,7 +93,6 @@ public IndexedLinkedList(int dummy) {
 	public boolean add(int index, T obj) {
 		boolean res = true;
 		Node<T> newNode = new Node<>(obj);
-	
 		if(index == 0) {
 			addNodeHead(newNode);
 		} else if (index == size) {
@@ -97,17 +104,14 @@ public IndexedLinkedList(int dummy) {
 			res = false;
 		}
 		return res;
-		
 	}
 
-	private void addNodeMiddle(Node<T> newNode,
-			Node<T> beforeNode) {
+	private void addNodeMiddle(Node<T> newNode, Node<T> beforeNode) {
 		newNode.next = beforeNode;
 		newNode.prev = beforeNode.prev;
 		beforeNode.prev.next = newNode;
 		beforeNode.prev = newNode;
 		size++;
-		
 	}
 	private void addNodeHead(Node<T> newNode) {
 		if(head == null) {
@@ -129,7 +133,6 @@ public IndexedLinkedList(int dummy) {
 			tail = newNode;
 		}
 		size++;
-		
 	}
 	private Node<T> getNode(int ind) {
 		return ind < size / 2 ? getFromLeft(ind) : getFromRight(ind);
@@ -234,11 +237,12 @@ public IndexedLinkedList(int dummy) {
 		} else {
 			removeNodeMiddle(removedNode);
 		}
+		
 	}
 	private void removeNodeMiddle(Node<T> removedNode) {
 		removedNode.next.prev = removedNode.prev;
 		removedNode.prev.next = removedNode.next;
-		size--;
+		size--; 
 	}
 
 	private void removeTail() {
@@ -323,8 +327,9 @@ public IndexedLinkedList(int dummy) {
 		}
 		return res;
 	}
-
 	
+	//Method removeIf uses removing objects matching a predicate through ListIterator
+
 	
 	
 	@Override
@@ -340,8 +345,7 @@ public IndexedLinkedList(int dummy) {
 
 	@Override
 	public void sort() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -351,3 +355,49 @@ public IndexedLinkedList(int dummy) {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+//
+//
+//1.
+//Complete all methods of the class IndexedLinkedList and make sure that all the tests pass.
+//Below are some hints for the methods
+//1.1.
+//Method removeIf uses removing objects matching a predicate through ListIterator
+//1.2.
+//Method sort and updates related to this method:
+//1.2.1.
+//Creates array T objects from list
+//1.2.2.
+//Sorts array objects using method sort of the class Arrays – Arrays.sort(array, comparator)
+//1.2.3.
+//Add new field T[] array inside the class and this field should contain the reference
+//to the array sorted in 1.2.2
+//1.2.4.
+//Pass over whole linked list starting from the head and in each node set object in the proper order from the array
+//created and sorted in the 1.2.1
+//–
+//1.2.3
+//1.2.5.
+//In two add functions you should add array = null. It’s done for the binarySearch methods explained below
+
+//1.3.
+//Method binarySearch
+//1.3.1.
+//The method inspects the field “array” explained in the 1.2
+//1.3.2.
+//In the case the field is null the binarySearch calls the method sort for sorting and
+//setting the sorted array. That’s why after adding new object the array should be
+//set in null because any adding breaks the sorted array. Sorting after adding doesn’t
+//make any sense as only for binarySearch the list should be sorted. If the array is
+//not null it means that there was sorting and after the sorting there wasn’t adding
+//1.3.3.
+//binarySearch calls the method binarySearch of the class Arrays
+//(Arrays.binarySearch(array, ...) and its result should be returned from the function

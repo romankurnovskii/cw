@@ -2,7 +2,6 @@ package telran.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.Iterator;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,6 +118,7 @@ class IndexedListTests {
 		assertEquals(-5, stringsLength.binarySearch("lmn", compLength));
 		assertEquals(3, stringsLength.binarySearch("lm", compLength ));
 	}
+	
 	private IndexedList<String> getListStrings(String[] strings) {
 		// Array<String> listNumbers = new Array<>(strings.length);     <- this was
 		try {
@@ -137,6 +137,7 @@ class IndexedListTests {
 			return null;
 		}
 	}
+	
 	@Test
 	void testFilter() {
 		int expected[] = {10, -8, 70, 30};
@@ -230,12 +231,12 @@ class IndexedListTests {
 	assertArrayEquals(Expected, getActualNumbers(listNumbers));  //getActualNumbers - писали этот метод чтобы он вывел массив
 
 			
-			
+	
+	    
  }
 
  
-	
- 
+
  
 
 
