@@ -1,5 +1,6 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -7,11 +8,10 @@ import java.util.function.Predicate;
 
 public class IndexedLinkedList<T> implements IndexedList<T>{
 	
-	
 private Node<T> head;
 private Node<T> tail;
 private int size;
-	
+private T[] arrayT;  //создал массив чтобы в нем сортировать ноды	
 	
 private static class Node<T> {
 	public T obj;
@@ -84,8 +84,6 @@ public IndexedLinkedList(int dummy) {
 	public void add(T obj) {
 		Node<T> newNode = new Node<>(obj);
 		addNodeTail(newNode);
-
-		
 	}
 	
 
@@ -106,6 +104,7 @@ public IndexedLinkedList(int dummy) {
 		return res;
 	}
 
+	
 	private void addNodeMiddle(Node<T> newNode, Node<T> beforeNode) {
 		newNode.next = beforeNode;
 		newNode.prev = beforeNode.prev;
@@ -218,14 +217,13 @@ public IndexedLinkedList(int dummy) {
 		return res;
 	}
 
-	@Override
+	@Override  // находит ноду -> удаляет ноду вызывая ф-ю а сама выводит ее obj в ретерн
 	public Object remove(int ind) {
 		Object res = null;
 		if (isValidIndex(ind)) {
 			Node<T> removedNode = getNode(ind);
 			res = removedNode.obj;
 			removeNode(removedNode);
-			
 		}
 		return res;
 	}
@@ -329,6 +327,21 @@ public IndexedLinkedList(int dummy) {
 	}
 	
 	//Method removeIf uses removing objects matching a predicate through ListIterator
+	public boolean removeIfUsingIterator(Predicate<T> predicate) {
+		Iterator<T> linkIterator = new ListIterator();
+		boolean res = false; 							// пока что не нашли
+		while (linkIterator.hasNext()) {			   // пока есть следующая нода - сверяем
+			T nodaT = (T) linkIterator.next();  		 //  проставляем текущую
+			if (predicate.test(nodaT)) {
+				linkIterator.remove();
+				res = true;
+			}
+		}
+		return res;
+	}
+	
+	
+	
 
 	
 	
@@ -352,6 +365,22 @@ public IndexedLinkedList(int dummy) {
 	public void sort(Comparator<T> comp) {
 		// TODO Auto-generated method stub
 		
+	arrayT = (T[]) new Object[size]; 						//cоздал массив объектов типа Т размером взятым из list
+	
+	Node<T> curreNode = head; 								// начинаю идти с 1-й ноды
+	for (int i = 0; i < arrayT.length; i++) {   			// добавил все объекты в массиы
+		arrayT[i] = curreNode.obj;
+		curreNode = curreNode.next;
+	}
+	
+	Arrays.sort(arrayT, comp);							//сортирую стандартно и в качестве интер использую параметр comp
+	
+										// ноды оставляю те же, а вот объекты в них вставляю согласно проведенной сортировке
+	for (int i = 0; i < arrayT.length; i++) {
+		curreNode.obj = arrayT[i];
+		curreNode = curreNode.next;
+	}
+	
 	}
 
 }
@@ -369,35 +398,23 @@ public IndexedLinkedList(int dummy) {
 //1.
 //Complete all methods of the class IndexedLinkedList and make sure that all the tests pass.
 //Below are some hints for the methods
-//1.1.
-//Method removeIf uses removing objects matching a predicate through ListIterator
-//1.2.
-//Method sort and updates related to this method:
-//1.2.1.
-//Creates array T objects from list
-//1.2.2.
-//Sorts array objects using method sort of the class Arrays – Arrays.sort(array, comparator)
-//1.2.3.
-//Add new field T[] array inside the class and this field should contain the reference
-//to the array sorted in 1.2.2
-//1.2.4.
-//Pass over whole linked list starting from the head and in each node set object in the proper order from the array
-//created and sorted in the 1.2.1
-//–
-//1.2.3
-//1.2.5.
-//In two add functions you should add array = null. It’s done for the binarySearch methods explained below
+//1.1. Method removeIf uses removing objects matching a predicate through ListIterator
+//1.2. Method sort and updates related to this method:
+//1.2.1. Creates array T objects from list
+//1.2.2.Sorts array objects using method sort of the class Arrays – Arrays.sort(array, comparator)
+//1.2.3. Add new field T[] array inside the class and this field should contain the reference to the array sorted in 1.2.2
+//1.2.4. Pass over whole linked list starting from the head and in each node set object in the proper order from the array
+//created and sorted in the 1.2.1 1.2.3
+//1.2.5. In two add functions you should add array = null. It’s done for the binarySearch methods explained below
 
-//1.3.
-//Method binarySearch
-//1.3.1.
-//The method inspects the field “array” explained in the 1.2
-//1.3.2.
-//In the case the field is null the binarySearch calls the method sort for sorting and
+//1.3. Method binarySearch
+//1.3.1. The method inspects the field “array” explained in the 1.2
+//1.3.2. In the case the field is null the binarySearch calls the method sort for sorting and
 //setting the sorted array. That’s why after adding new object the array should be
 //set in null because any adding breaks the sorted array. Sorting after adding doesn’t
 //make any sense as only for binarySearch the list should be sorted. If the array is
 //not null it means that there was sorting and after the sorting there wasn’t adding
-//1.3.3.
-//binarySearch calls the method binarySearch of the class Arrays
+//1.3.3. binarySearch calls the method binarySearch of the class Arrays
 //(Arrays.binarySearch(array, ...) and its result should be returned from the function
+
+
