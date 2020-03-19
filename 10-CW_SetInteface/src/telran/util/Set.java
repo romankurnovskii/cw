@@ -13,8 +13,3 @@ boolean removeIf(Predicate<T> predicate); //предикат говорит: к�
 int size();
 Boolean contains (T pattern);
 }
-
-
-
-
-

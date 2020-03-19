@@ -5,24 +5,59 @@ import java.util.function.Predicate;
 
 
 public class HashSet<T> implements Set<T> {
+	
 	private static final float FACTOR = 0.75f;
+	
 	IndexedList<T>[] hashTable = new IndexedLinkedList[16];
 	int size;
 	
 	
 	public HashSet(int initialSize) {
 		hashTable = new IndexedList[initialSize];
+		                System.out.println("HashSet создан");
+		                System.out.println(hashTable[0]);
+		                System.out.println("длина hashTable " + hashTable.length);
 	}
 	
 	public HashSet() {
 		this(16);		
 	}
+
 	
 
+	private class HashSetIterator implements Iterator<T> {
+		// сначала обозначу как я буду определять откуда начинать итерацию
+		int size; // общий размер / кол-во элементов
+		int currentInd; //позиция текущего
+
+		@Override
+		public boolean hasNext() {
+									System.out.println("start hasNext");
+									System.out.println("hasNext currentInd " + currentInd);
+									System.out.println("hasNext size " + size);
+									
+			return currentInd < size;   //если текущая позиция меньше чем общий размер значит есть еще элементы справа
+		}
+
+		@Override
+		public T next() {
+			System.out.println("DDDD");
+			T resT = null;
+			if (currentInd == size) {
+				// пока хз что писать если последнего элемента полсе текущего нет
+			}
+			else {
+				resT = (T) hashTable[currentInd + 1];
+			}
+			return resT;
+		}
+	}
+	
+		
+
 	@Override
-	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<T> iterator() { 		// метод имплементируется чтобы я выбрал какой итератор использвоать здесь
+		return new HashSetIterator();
 	}
 
 	@Override
@@ -35,7 +70,9 @@ public class HashSet<T> implements Set<T> {
 		if (size > FACTOR * hashTable.length) {
 			recreateHashTable();
 		}
+		
 		int index = getHashTableIndex(obj);
+		
 		if (hashTable[index] == null ) {							// индекс путсой
 			hashTable[index] = new IndexedLinkedList<T>();
 		}
@@ -43,6 +80,10 @@ public class HashSet<T> implements Set<T> {
 		hashTable[index].add(obj);  				// добавляем в конец
 		return true;
 	}
+	
+	
+	
+	
 
 	private void recreateHashTable() {
 		// создаем новую хештаблицу или хешсет с размером таблицы в 2 раза больше чем эта таблица
@@ -61,9 +102,20 @@ public class HashSet<T> implements Set<T> {
 
 	@Override
 	public Set<T> filter(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<T> res = new HashSet<T>();
+		Iterator<T> myIterator = new HashSetIterator();
+		res = null;													// будет новым сетом в результате 
+		while (myIterator.hasNext()) {			  //перебираем элементы в исодном сете
+			T elemenT = (T) myIterator.next();  		  
+			if (predicate.test(elemenT)) {				// если соответствует предикату то
+				res.add(elemenT);						// добавляем
+			}
+		}
+		return res;
 	}
+	
+
+	
 
 	@Override
 	public Object remove(Object pattern) {
@@ -71,11 +123,25 @@ public class HashSet<T> implements Set<T> {
 		return null;
 	}
 
+	
+
+	
+	//Method removeIf uses removing objects matching a predicate through Iterator
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return false;
+		Iterator<T> myIterator = new HashSetIterator();
+		boolean res = false; 							// пока что не нашли
+		while (myIterator.hasNext()) {			   // пока есть следующbй - сверяем
+			T elemenT = (T) myIterator.next();  		 //  проставляем текущую
+			if (predicate.test(elemenT)) {
+				myIterator.remove();
+				res = true;
+			}
+		}
+		return res;
 	}
+	
+	
 
 	@Override
 	public int size() {
@@ -86,7 +152,6 @@ public class HashSet<T> implements Set<T> {
 	@Override
 	public Boolean contains(T pattern) {
 		int index = getHashTableIndex(pattern);
-		
 		return hashTable[index] != null && hashTable[index].indexOf(pattern) >= 0;
 	}
 	
@@ -97,4 +162,7 @@ public class HashSet<T> implements Set<T> {
 		return index; 
 	}
 
+	
+
+	
 }
