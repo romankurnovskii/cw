@@ -7,6 +7,9 @@ import java.util.function.Predicate;
 public class Array {
 private Object[] array;
 private int size = 0;
+
+
+
 public Array(int capacity) {
 	array = new Object[capacity];
 }

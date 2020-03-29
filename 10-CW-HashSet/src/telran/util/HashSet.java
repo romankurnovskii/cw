@@ -150,7 +150,7 @@ public class HashSet<T> implements Set<T> {
 	}
 
 	@Override
-	public Boolean contains(T pattern) {
+	public boolean contains(T pattern) {
 		int index = getHashTableIndex(pattern);
 		return hashTable[index] != null && hashTable[index].indexOf(pattern) >= 0;
 	}

@@ -16,6 +16,14 @@ class IndexedListTests {
 	void setUp() {
 		listNumbers = getList();
 	}
+	
+	
+
+	
+	
+	
+	
+	
 	@Test
 	void testAddGetSize() {
 	//	Array<Integer> listNumbers = getList();   теперь а т к онавыоплняется теперь в setUp

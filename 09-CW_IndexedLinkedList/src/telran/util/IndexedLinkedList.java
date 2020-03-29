@@ -5,79 +5,62 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
+public class IndexedLinkedList<T> implements IndexedList<T> {
 
-public class IndexedLinkedList<T> implements IndexedList<T>{
-	
-private Node<T> head;
-private Node<T> tail;
-private int size;
-private T[] arrayT;  //создал массив чтобы в нем сортировать ноды	
-	
-private static class Node<T> {
-	public T obj;
-	public Node<T> next;
-	public Node<T> prev;
-	
-	
-	public Node(T obj) {
-		this.obj = obj;
-	}
-}
+	private Node<T> head;
+	private Node<T> tail;
+	private int size;
+	private T[] arrayT; // создал массив чтобы в нем сортировать ноды
 
+	private static class Node<T> {
+		public T obj;
+		public Node<T> next;
+		public Node<T> prev;
 
-private class ListIterator implements Iterator<T> {
-
-	Node<T> current = head;
-	
-	
-	@Override
-	public boolean hasNext() {
-		return current != null;
-	}
-
-	@Override
-	public T next() {
-		T res =  current.obj;
-		current = current.next;
-		return res;
-	}
-	
-	@Override
-	public void remove() {
-		if (current == null) {
-			removeTail();
+		public Node(T obj) {
+			this.obj = obj;
 		}
-		else {
-			removeNode(current.prev);
+	}
+
+	private class ListIterator implements Iterator<T> {
+
+		Node<T> current = head;
+
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public T next() {
+			T res = current.obj;
+			current = current.next;
+			return res;
+		}
+
+		@Override
+		public void remove() {
+			if (current == null) {
+				removeTail();
+			} else {
+				removeNode(current.prev);
+			}
+
 		}
 
 	}
-	
-}
 
+	public IndexedLinkedList() {
 
+	}
 
+	public IndexedLinkedList(int dummy) {
 
-
-
-
-
-
-
-
-public IndexedLinkedList() {
-	
-}
-public IndexedLinkedList(int dummy) {
-	
-}
-
-
+	}
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ListIterator();
 	}
 
 	@Override
@@ -85,13 +68,12 @@ public IndexedLinkedList(int dummy) {
 		Node<T> newNode = new Node<>(obj);
 		addNodeTail(newNode);
 	}
-	
 
 	@Override
 	public boolean add(int index, T obj) {
 		boolean res = true;
 		Node<T> newNode = new Node<>(obj);
-		if(index == 0) {
+		if (index == 0) {
 			addNodeHead(newNode);
 		} else if (index == size) {
 			addNodeTail(newNode);
@@ -104,7 +86,6 @@ public IndexedLinkedList(int dummy) {
 		return res;
 	}
 
-	
 	private void addNodeMiddle(Node<T> newNode, Node<T> beforeNode) {
 		newNode.next = beforeNode;
 		newNode.prev = beforeNode.prev;
@@ -112,8 +93,9 @@ public IndexedLinkedList(int dummy) {
 		beforeNode.prev = newNode;
 		size++;
 	}
+
 	private void addNodeHead(Node<T> newNode) {
-		if(head == null) {
+		if (head == null) {
 			head = tail = newNode;
 		} else {
 			newNode.next = head;
@@ -121,10 +103,11 @@ public IndexedLinkedList(int dummy) {
 			head = newNode;
 		}
 		size++;
-		
+
 	}
+
 	private void addNodeTail(Node<T> newNode) {
-		if(head == null) {
+		if (head == null) {
 			head = tail = newNode;
 		} else {
 			tail.next = newNode;
@@ -133,9 +116,11 @@ public IndexedLinkedList(int dummy) {
 		}
 		size++;
 	}
+
 	private Node<T> getNode(int ind) {
 		return ind < size / 2 ? getFromLeft(ind) : getFromRight(ind);
 	}
+
 	@Override
 	public int binarySearch(T pattern) {
 		// TODO Auto-generated method stub
@@ -158,7 +143,7 @@ public IndexedLinkedList(int dummy) {
 	public T get(int ind) {
 		T res = null;
 		if (isValidIndex(ind)) {
-			Node<T>nodeRes = getNode(ind);
+			Node<T> nodeRes = getNode(ind);
 			res = nodeRes.obj;
 		}
 		return res;
@@ -173,14 +158,14 @@ public IndexedLinkedList(int dummy) {
 	}
 
 	private Node<T> getFromLeft(int ind) {
-		
+
 		Node<T> current = head;
-		for( int i = 0; i < ind; i++) {
+		for (int i = 0; i < ind; i++) {
 			current = current.next;
 		}
 		return current;
 	}
-	
+
 	private boolean isValidIndex(int ind) {
 		return ind >= 0 && ind < size;
 	}
@@ -195,7 +180,7 @@ public IndexedLinkedList(int dummy) {
 					res = i;
 					break;
 				}
-			current = current.next;	
+				current = current.next;
 			}
 		}
 		return res;
@@ -210,14 +195,14 @@ public IndexedLinkedList(int dummy) {
 				if (pattern.equals(current.obj)) {
 					res = i;
 					break;
-					}
-			current = current.prev;
+				}
+				current = current.prev;
 			}
 		}
 		return res;
 	}
 
-	@Override  // находит ноду -> удаляет ноду вызывая ф-ю а сама выводит ее obj в ретерн
+	@Override // находит ноду -> удаляет ноду вызывая ф-ю а сама выводит ее obj в ретерн
 	public Object remove(int ind) {
 		Object res = null;
 		if (isValidIndex(ind)) {
@@ -227,20 +212,22 @@ public IndexedLinkedList(int dummy) {
 		}
 		return res;
 	}
+
 	private void removeNode(Node<T> removedNode) {
-		if (removedNode == head ) {
+		if (removedNode == head) {
 			removeHead();
-		} else if(removedNode == tail) {
+		} else if (removedNode == tail) {
 			removeTail();
 		} else {
 			removeNodeMiddle(removedNode);
 		}
-		
+
 	}
+
 	private void removeNodeMiddle(Node<T> removedNode) {
 		removedNode.next.prev = removedNode.prev;
 		removedNode.prev.next = removedNode.next;
-		size--; 
+		size--;
 	}
 
 	private void removeTail() {
@@ -248,27 +235,29 @@ public IndexedLinkedList(int dummy) {
 			head = tail = null;
 		} else {
 			tail.prev.next = null;
-		tail = tail.prev;
+			tail = tail.prev;
 		}
 		size--;
-		
+
 	}
+
 	private void removeHead() {
 		if (head == tail) {
 			head = tail = null;
 		} else {
 			head.next.prev = null;
-		head = head.next;
+			head = head.next;
 		}
 		size--;
-		
+
 	}
-	
-	/*1-й мой вариант
+
+	/*
+	 * 1-й мой вариант
 	 * 
 	 */
 	@Override
-	public Object remove(Object pattern) {		
+	public Object remove(Object pattern) {
 		Object res = null;
 		if (pattern != null) {
 			Node<T> current = head;
@@ -276,62 +265,51 @@ public IndexedLinkedList(int dummy) {
 				if (pattern.equals(current.obj)) {
 					remove(i);
 					res = current.obj;
-					break;					
+					break;
 				}
-			current = current.next;	
+				current = current.next;
 			}
 		}
 		return res;
 	}
-	
-	/* 2-й вариант решения: Object remove(Object pattern) - 2 passes
+
+	/*
+	 * 2-й вариант решения: Object remove(Object pattern) - 2 passes
 	 * 
-	 * int index = indexOf(pattern)
-	 * Object res = null;
-	 * if (index >= 0) {
-	 * 	Node<T> node = getNode(index);
-	 * 	res = node.obj;
-	 * removeNode(node);
-	 * }
+	 * int index = indexOf(pattern) Object res = null; if (index >= 0) { Node<T>
+	 * node = getNode(index); res = node.obj; removeNode(node); }
 	 */
-	
-	/* 3-й вариант - 1 pass
+
+	/*
+	 * 3-й вариант - 1 pass
 	 * 
-	 * Node<T> current = head;
-	 * while (current != null && !current.obj.equals(pattern)) {
-	 * 	current = curent.next
-	 * }
-	 * Object res = null;
-	 * if (current != null) {
-	 * 	res = current.obj;
-	 * 	removeNode(current);
-	 * }
-	 * return res;
+	 * Node<T> current = head; while (current != null &&
+	 * !current.obj.equals(pattern)) { current = curent.next } Object res = null; if
+	 * (current != null) { res = current.obj; removeNode(current); } return res;
 	 * 
 	 */
 
-	
-	
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		Node<T> current = head;		
+		Node<T> current = head;
 		boolean res = false;
 		for (int i = 0; i < size; i++) {
-			if(predicate.test(current.obj)) {
-		this.removeNode(current);
-		size--;
-		res = true;
+			if (predicate.test(current.obj)) {
+				this.removeNode(current);
+				size--;
+				res = true;
 			}
 		}
 		return res;
 	}
-	
-	//Method removeIf uses removing objects matching a predicate through ListIterator
+
+	// Method removeIf uses removing objects matching a predicate through
+	// ListIterator
 	public boolean removeIfUsingIterator(Predicate<T> predicate) {
 		Iterator<T> linkIterator = new ListIterator();
-		boolean res = false; 							// пока что не нашли
-		while (linkIterator.hasNext()) {			   // пока есть следующая нода - сверяем
-			T nodaT = (T) linkIterator.next();  		 //  проставляем текущую
+		boolean res = false; // пока что не нашли
+		while (linkIterator.hasNext()) { // пока есть следующая нода - сверяем
+			T nodaT = (T) linkIterator.next(); // проставляем текущую
 			if (predicate.test(nodaT)) {
 				linkIterator.remove();
 				res = true;
@@ -339,12 +317,7 @@ public IndexedLinkedList(int dummy) {
 		}
 		return res;
 	}
-	
-	
-	
 
-	
-	
 	@Override
 	public Object set(int ind, T newObj) {
 		// TODO Auto-generated method stub
@@ -358,40 +331,33 @@ public IndexedLinkedList(int dummy) {
 
 	@Override
 	public void sort() {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void sort(Comparator<T> comp) {
 		// TODO Auto-generated method stub
-		
-	arrayT = (T[]) new Object[size]; 						//cоздал массив объектов типа Т размером взятым из list
-	
-	Node<T> curreNode = head; 								// начинаю идти с 1-й ноды
-	for (int i = 0; i < arrayT.length; i++) {   			// добавил все объекты в массиы
-		arrayT[i] = curreNode.obj;
-		curreNode = curreNode.next;
-	}
-	
-	Arrays.sort(arrayT, comp);							//сортирую стандартно и в качестве интер использую параметр comp
-	
-										// ноды оставляю те же, а вот объекты в них вставляю согласно проведенной сортировке
-	for (int i = 0; i < arrayT.length; i++) {
-		curreNode.obj = arrayT[i];
-		curreNode = curreNode.next;
-	}
-	
+
+		arrayT = (T[]) new Object[size]; // cоздал массив объектов типа Т размером взятым из list
+
+		Node<T> curreNode = head; // начинаю идти с 1-й ноды
+		for (int i = 0; i < arrayT.length; i++) { // добавил все объекты в массиы
+			arrayT[i] = curreNode.obj;
+			curreNode = curreNode.next;
+		}
+
+		Arrays.sort(arrayT, comp); // сортирую стандартно и в качестве интер использую параметр comp
+
+		// ноды оставляю те же, а вот объекты в них вставляю согласно проведенной
+		// сортировке
+		for (int i = 0; i < arrayT.length; i++) {
+			curreNode.obj = arrayT[i];
+			curreNode = curreNode.next;
+		}
+
 	}
 
 }
-
-
-
-
-
-
-
-
 
 //
 //
@@ -416,5 +382,3 @@ public IndexedLinkedList(int dummy) {
 //not null it means that there was sorting and after the sorting there wasn’t adding
 //1.3.3. binarySearch calls the method binarySearch of the class Arrays
 //(Arrays.binarySearch(array, ...) and its result should be returned from the function
-
-

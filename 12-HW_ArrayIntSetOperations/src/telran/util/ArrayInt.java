@@ -2,8 +2,6 @@ package telran.util;
 
 import java.util.Arrays;
 
-
-
 public class ArrayInt {
 /**
  * searches for index of a given number in a given array
@@ -125,17 +123,14 @@ public class ArrayInt {
 	public static int[] union (int ar1[], int ar2[]) {
 		int res[] = Arrays.copyOf(ar1, ar1.length + ar2.length);
 		int resInd = ar1.length;
-		Arrays.sort(ar1);
+		HashSet<Integer> set = toSetFromArray(ar1);
 		for (int i = 0; i < ar2.length; i++) {
-			if (Arrays.binarySearch(ar1, ar2[i]) < 0) {
+			if (!set.contains(ar2[i])) {
 				res[resInd++] = ar2[i];
 			}
 		}
 		return Arrays.copyOf(res, resInd);
 	}
-	
-
-	
 	/**
 	 * Assumption: no repeated numbers in each array, but
 	 * numbers in first array may be repeated in the second
@@ -146,16 +141,22 @@ public class ArrayInt {
 	 */
 	public static int[] intersection (int ar1[], int ar2[]) {
 		int res[] = new int[Math.min(ar1.length, ar2.length)];
+		HashSet<Integer> set = toSetFromArray(ar2);
 		int resInd = 0;
 		for (int i = 0; i < ar1.length; i++) {
-			if (search(ar2, ar1[i]) >= 0) {
+			if (set.contains(ar1[i])) {
 				res[resInd++] = ar1[i];
 			}
 		}
 		return Arrays.copyOf(res, resInd);
 	}
-	
-	
+	private static HashSet<Integer> toSetFromArray(int[] ar) {
+		HashSet<Integer> res = new HashSet<>();
+		for(int num: ar) {
+			res.add(num);
+		}
+		return res;
+	}
 	/**
 	 * Assumption: no repeated numbers in each array, but
 	 * numbers in first array may be repeated in the second
@@ -167,8 +168,9 @@ public class ArrayInt {
 	public static int[] difference (int ar1[], int ar2[]) {
 		int[] res = new int[ar1.length];
 		int resInd = 0;
+		HashSet<Integer> set = toSetFromArray(ar2);
 		for (int i = 0; i < ar1.length; i++) {
-			if (search(ar2, ar1[i]) < 0) {
+			if (!set.contains(ar1[i])) {
 				res[resInd++] = ar1[i];
 			}
 			
