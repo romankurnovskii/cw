@@ -6,9 +6,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/03-HW_ArrayInt"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/10-CW_SetInteface"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/10-CW-HashSet"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

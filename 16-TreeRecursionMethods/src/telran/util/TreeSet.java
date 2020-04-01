@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
-
 public class TreeSet<T> implements SortedSet<T> {
 	private static class Node<T> {
 		T obj;
@@ -16,6 +15,8 @@ public class TreeSet<T> implements SortedSet<T> {
 			this.obj = obj;
 		}
 	}
+
+	private static final int SPACES_PER_LEVEL = 2;
 
 	Comparator<T> comparator;
 	Node<T> root;
@@ -129,6 +130,7 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public boolean contains(T pattern) {
+
 		return size > 0 && getParent(pattern) == null;
 	}
 
@@ -208,62 +210,38 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public T getMin() {
-		Node<T> currentNode = root;							//  минимальный он и рут для начала
-		T currentT = currentNode.obj;							// если есть элемент справа значит он минимальный
-
-		while (currentNode.left != null) {
-			currentNode = currentNode.left;
-		}
-		return currentT;
+		
+		return root != null ? getLeastNode(root).obj : null;
 	}
 
 	@Override
 	public T getMax() {
-		Node<T> currentNode = root;
-		T currentT = currentNode.obj;
-		while (currentNode.left != null) {
-			currentNode = currentNode.left;
-		}
-		return currentT;
+		
+		return root != null ? getMostNode(root).obj : null;
 	}
-	
+
+	private Node<T> getMostNode(Node<T> node) {
+		while (node.right != null) {
+			node = node.right;
+		}
+		
+		return node;
+	}
 
 	@Override
-	public SortedSet<T> subset(T from, boolean isIncludedFrom, T to, boolean isIncludedTo) {
-		// вывести сет от from элемента до to элемента
-		// результатом будет новый сет
-		// если инклюдет равен то сую
-		// перебираю весь сет пока хз как не перебирать весь а только диапазон
-		// стопэ . тут получаю сам объект а перебираю ноды. значит мне сначала ноду поулчить по объекту надо
-		// а вот вторую ТУ наверн не надо если я буду сранивать объекты этих нод
+	public SortedSet<T> subset(T from, boolean isIncludedFrom,
+			T to, boolean isIncludedTo) {
 		
-		SortedSet<T> res = new TreeSet<T>();						// итоговый сет
-		
-		Node<T> current = root;										// определяю ноду по объекту
-		while (current != null) {
-			int resComp = comparator.compare(from, current.obj);
-			if (resComp == 0) {
-				break;
-			}
-			current = resComp < 0 ? current.left : current.right;
+		SortedSet<T> res = new TreeSet<>(comparator);
+		if (isValidArguments(from, isIncludedFrom, to, isIncludedTo)) {
+			Node<T> nodeFrom = findClosestGreaterEqual(from, isIncludedFrom);
+			res =  nodeFrom == null ? res : getSetFromNodeToObject(res, nodeFrom, to,
+					isIncludedTo);
 		}
-																		// определил ноду от которой начинаю
-		if (isIncludedFrom) res.add(current.obj);
-		// за основну возьму что from всегда меньше чем to
-		while (comparator.compare(current.obj, to) == -1) {				//пока мой карент меньше ту
-			// TODO добавляю в сет и получаю родителя карента
-			res.add(current.obj);
-			getParentFromLeft(current); 		
-		}
-		
-		if (isIncludedTo) res.add(current.obj);
-			
 		return res;
+		
 	}
 
-	
-	
-	
 	private boolean isValidArguments(T from, boolean isIncludedFrom, T to, boolean isIncludedTo) {
 		if (from == null || to == null)
 			return false;
@@ -316,6 +294,62 @@ public class TreeSet<T> implements SortedSet<T> {
 		return res;
 	}
 
+	public void rotatedTreeDisplay() {
+		rotatedDisplay(root, 0);
+		
+	}
+	public int height() {
+		return height(root);
+	}
+
+	private int height(Node<T> root) {
+		int res = 0;
+		if (root != null) {
+			int heightRight = height(root.right);//height of the right subtree
+			int heightLeft =  height(root.left);
+			res = 1 + Math.max(heightRight, heightLeft);
+		}
+		
+		return res;
+		
+	}
+	public int width() {
+		return width(root);
+	}
+
+	private int width(Node<T> root) {
+		if (root == null) {
+			return 0;
+		}
+		if (root.left == null && root.right == null) {
+			return 1;
+		}
+		return width(root.left) + width(root.right);
+	}
+
+	private void rotatedDisplay(Node<T> root, int level) {
+		if (root != null) {
+			rotatedDisplay(root.right, level + 1  );
+			displayRoot(root, level);
+			rotatedDisplay(root.left, level + 1);
+		}
+		
+	}
+
+	private void displayRoot(Node<T> root, int level) {
+		printOffset(level);
+		System.out.println(root.obj);
+		
+	}
+
+	private void printOffset(int level) {
+		int limit = level * SPACES_PER_LEVEL;
+		for(int i = 0; i < limit; i++) {
+			System.out.print(" ");
+		}
+		
+	}
+
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		// TODO Auto-generated method stub
@@ -333,19 +367,6 @@ public class TreeSet<T> implements SortedSet<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
+
 }

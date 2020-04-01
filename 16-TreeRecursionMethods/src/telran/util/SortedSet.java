@@ -7,4 +7,3 @@ SortedSet<T> subset(T from, boolean isIncludedFrom, T to, boolean isIncludedTo);
 SortedSet<T> head(T key, boolean isIncluded); //all elements that either strong less or less/equal than key
 SortedSet<T> tail(T key, boolean isIncluded); //all elements that either strong greater or greater/equal than key
 }
-
