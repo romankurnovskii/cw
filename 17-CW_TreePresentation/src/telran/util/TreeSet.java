@@ -401,42 +401,145 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	}
 
+	
+	
+	
+	
 	/*
-	 * new task
+	 * ************************************** balance tree
 	 * 
 	 */
-
+	
+	
+	
 	public void balance() {
-		ArrayList<Node<T>> list = new ArrayList<>(size);
-		fillList(root, list);
-
-		root = balance(list, 0, size - 1, null);
-
+		Node<T>[] arrayNodes = new Node[size];
+		fillArrayNodes(arrayNodes, root); //fills array of the nodes
+		root = balance(arrayNodes, 0, size - 1, null);//0 – left index, size – 1 – right index;  null – parent for new root
 	}
 
-	private Node<T> balance(ArrayList<Node<T>> list, int indexFrom, int indexTo, Node<T> root) {
-		if (indexFrom > indexTo) {
+	
+	private Node<T> balance(Node<T>[] arrayNodes, int i, int j, Node<T> root) {
+		Node<T> newRoot = null;
+		int leftIndex = i;
+		int rightIndex = j;
+		
+		if ( leftIndex > rightIndex) {
 			return null;
 		}
+		
+		// найдем средний индекс по данным которые получили и по формуле
+		int indexRoot = (leftIndex + rightIndex) / 2;
+		
+		// 2 Finding root node
+		newRoot = arrayNodes[indexRoot];
 
-		int indexMiddle = (indexFrom + indexTo) / 2;
+		// пока хз зачем это - беру из описания выше что: null – parent for new root
+		// вроде это не использую
+		newRoot.parent = root;
+		
+		// 3 Root.left = balancing of left part; left part -> same left index and right is root index - 1
+		newRoot.left = balance(arrayNodes, leftIndex, rightIndex-1, newRoot);
+		
+		//4 Root.right = balancing of right part; right part -> left index is the root index + 1 and same right index 
+		newRoot.right = balance(arrayNodes, leftIndex, rightIndex + 1, newRoot);
 
-		Node<T> node = list.get(indexMiddle);
-
-		node.parent = root;
-
-		node.left = balance(list, indexFrom, indexMiddle - 1, node);
-		node.right = balance(list, indexMiddle + 1, indexTo, node);
-
-		return node;
+		
+		return root;
 	}
 
-	private void fillList(Node<T> node, ArrayList<Node<T>> list) {
-		if (node != null) {
-			fillList(node.left, list);
-			list.add(node);
-			fillList(node.right, list);
+	
+	private void fillArrayNodes(Node<T>[] arrayNodes, Node<T> root) {
+		
+		// сюда мы риходим с balance()
+		// запускаемся раньше чем рут может стать нулом
+		if (root != null) {
+			int mid = arrayNodes.length / 2;
+			arrayNodes[mid] = root;
+			for (int i = mid - 1; i == 0; i--) {
+				arrayNodes[i] = root.left;
+			}
+			for (int i = mid + 1; i == arrayNodes.length; i++) {
+				arrayNodes[i] = root.right;
+			}
 		}
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//
+//	public void balance() {
+//		ArrayList<Node<T>> list = new ArrayList<>(size);
+//		fillList(root, list);
+//
+//		root = balance(list, 0, size - 1, null);
+//
+//	}
+//
+//	private Node<T> balance(ArrayList<Node<T>> list, int indexFrom, int indexTo, Node<T> root) {
+//		if (indexFrom > indexTo) {
+//			return null;
+//		}
+//
+//		int indexMiddle = (indexFrom + indexTo) / 2;
+//
+//		Node<T> node = list.get(indexMiddle);
+//
+//		node.parent = root;
+//
+//		node.left = balance(list, indexFrom, indexMiddle - 1, node);
+//		node.right = balance(list, indexMiddle + 1, indexTo, node);
+//
+//		return node;
+//	}
+//
+//	private void fillList(Node<T> node, ArrayList<Node<T>> list) {
+//		if (node != null) {
+//			fillList(node.left, list);
+//			list.add(node);
+//			fillList(node.right, list);
+//		}
+//	}
+	
+	
+	
+	
+	
+	
+	
 
 }

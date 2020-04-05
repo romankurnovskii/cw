@@ -19,13 +19,14 @@ public class TreeSetTestAppl {
 		TreePresentation<Integer> treePresentation = tree.getTreePresentation();
 		System.out.println(treePresentation);
 		
+		
+		
 		System.out.println("\n------- start tree balance \n\n");
 		tree.balance();
 		
 
 }
 
-	
 	
 	private static void fillTree(TreeSet<Integer> tree, int nNumbers, int min, int max) {
 		if(max - min + 1 < nNumbers) {
@@ -41,10 +42,11 @@ public class TreeSetTestAppl {
 				
 			}while(!res);
 		}
-		
-
+	
 	}
 
+	
+	
 	private static int getRandomNumber(int min, int max) {
 		return (int) (min + Math.random() * (max - min + 1));
 	}
