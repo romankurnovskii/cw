@@ -390,13 +390,16 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	private void fillLevelsPresentation(Node<T> root, int level,
 			ArrayList<ArrayList<TreePresentation.Node<T>>> levels) {
+		
 		if (root != null) {
 			fillLevelsPresentation(root.left, level + 1, levels);
+			
 			TreePresentation.Node<T> node = new TreePresentation.Node<>();
 			node.obj = root.obj;
 			node.seqNumber = seqNumber++;
 			levels.get(level).add(node);
 			fillLevelsPresentation(root.right, level + 1, levels);
+			
 		}
 
 	}
@@ -413,18 +416,18 @@ public class TreeSet<T> implements SortedSet<T> {
 	
 	
 	public void balance() {
-		Node<T>[] arrayNodes = new Node[size];
+		ArrayList<Node<T>> arrayNodes = new ArrayList<Node<T>>(size);
 		fillArrayNodes(arrayNodes, root); //fills array of the nodes
 		root = balance(arrayNodes, 0, size - 1, null);//0 – left index, size – 1 – right index;  null – parent for new root
 	}
 
 	
-	private Node<T> balance(Node<T>[] arrayNodes, int i, int j, Node<T> root) {
+	private Node<T> balance(ArrayList<Node<T>> arrayNodes, int i, int j, Node<T> root) {
 		Node<T> newRoot = null;
 		int leftIndex = i;
 		int rightIndex = j;
 		
-		if ( leftIndex > rightIndex) {
+		if ( leftIndex > rightIndex ) {
 			return null;
 		}
 		
@@ -432,40 +435,35 @@ public class TreeSet<T> implements SortedSet<T> {
 		int indexRoot = (leftIndex + rightIndex) / 2;
 		
 		// 2 Finding root node
-		newRoot = arrayNodes[indexRoot];
-
+		newRoot = arrayNodes.get(indexRoot);			
+		
+		// теперь я должен добавить всех кто слева и делать это по убыванию
+		// а потом всех кто справа и едалть это по возрастанию
+		
 		// пока хз зачем это - беру из описания выше что: null – parent for new root
 		// вроде это не использую
 		newRoot.parent = root;
 		
 		// 3 Root.left = balancing of left part; left part -> same left index and right is root index - 1
-		newRoot.left = balance(arrayNodes, leftIndex, rightIndex-1, newRoot);
+		newRoot.left = balance(arrayNodes, leftIndex, indexRoot-1, root);
 		
 		//4 Root.right = balancing of right part; right part -> left index is the root index + 1 and same right index 
-		newRoot.right = balance(arrayNodes, leftIndex, rightIndex + 1, newRoot);
+		newRoot.right = balance(arrayNodes, indexRoot+1, rightIndex, root);
 
-		
 		return root;
 	}
 
 	
-	private void fillArrayNodes(Node<T>[] arrayNodes, Node<T> root) {
+	private void fillArrayNodes(ArrayList<Node<T>> arrayNodes, Node<T> root) {
 		
 		// сюда мы риходим с balance()
 		// запускаемся раньше чем рут может стать нулом
+		
 		if (root != null) {
-			int mid = arrayNodes.length / 2;
-			arrayNodes[mid] = root;
-			for (int i = mid - 1; i == 0; i--) {
-				arrayNodes[i] = root.left;
-			}
-			for (int i = mid + 1; i == arrayNodes.length; i++) {
-				arrayNodes[i] = root.right;
-			}
+			fillArrayNodes(arrayNodes, root.left);
+			arrayNodes.add(root);
+			fillArrayNodes(arrayNodes, root.right);
 		}
-		
-		
-		
 	}
 	
 	
