@@ -26,7 +26,7 @@ public abstract class PerfomanceTest {
 		for (int i = 1; i < nRuns; i++) {
 			this.runTest();
 		}
-
+ 
 		long finish = System.currentTimeMillis();
 
 		System.out.println("test name: " + this.testName);

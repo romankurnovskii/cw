@@ -21,7 +21,7 @@ public class ListOperationsTestAppl {
 
 		int nRuns = 100;
 		int nNumbers = 10000000;
-
+ 
 		IndexedLinkedList<Integer> iList = new IndexedLinkedList<>();
 		IndexedListOperations ob2 = new IndexedListOperations("test2", nRuns, iList, nNumbers, 100);
 		ob2.run();

@@ -26,7 +26,7 @@ public class IndexedListOperations extends PerfomanceTest {
 
 	@Override
 	public void runTest() {
-		runRemoveAddFirst();
+		 runRemoveAddFirst();
 	}
 
 	private void runRemoveAddFirst() {
