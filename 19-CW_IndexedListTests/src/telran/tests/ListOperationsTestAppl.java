@@ -27,7 +27,7 @@ public class ListOperationsTestAppl {
 		ob2.run();
 
 		System.out.println("\n");
-		
+
 		Array<Integer> array = new Array<Integer>();
 		IndexedListOperations ob1 = new IndexedListOperations("test1", nRuns, array, nNumbers, 100);
 		ob1.run();

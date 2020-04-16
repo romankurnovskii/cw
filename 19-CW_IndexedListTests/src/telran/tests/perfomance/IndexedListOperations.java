@@ -13,7 +13,6 @@ public class IndexedListOperations extends PerfomanceTest {
 		this.list = list;
 		this.nNumbers = nNumbers;
 		this.probGet = probGet;
-		
 
 		for (int i = 0; i < nNumbers; i++) {
 			this.list.add(100);

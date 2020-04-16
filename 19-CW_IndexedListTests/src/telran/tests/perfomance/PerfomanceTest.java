@@ -32,7 +32,7 @@ public abstract class PerfomanceTest {
 		System.out.println("test name: " + this.testName);
 		System.out.println("test start time: " + start);
 		System.out.println("test finish time: " + finish);
-		System.out.println("test execute time in milisec: " + (finish - start));
+		System.out.println("test execute time in milis: " + (finish - start));
 
 	}
 
