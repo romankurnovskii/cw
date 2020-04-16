@@ -9,6 +9,11 @@ import telran.util.JoinStringsImplString;
 class StringAndBuilder {
 	
 	String[] ar = {"Hello", "World"};
+	
+	@Test
+	void Test() {
+		System.out.println(System.currentTimeMillis());
+	}
 
 	
 	@Test
@@ -33,14 +38,14 @@ class StringAndBuilder {
 	void testJoinStringsImplString() {
 		JoinStringsImplString str = new JoinStringsImplString();
 		assertEquals("Hello World ", str.join(ar, " "));
-		//TODO remove "space" at the end of new string
+															//TODO remove "space" at the end of new string
 	}
 	
 	@Test
 	void testJoinStringsImplBuilder() {
 		JoinStringsImplBuilder str = new JoinStringsImplBuilder();
 		assertEquals("Hello World ", str.join(ar, " "));
-		//TODO remove "space" at the end of new string
+															//TODO remove "space" at the end of new string
 	}
 	
 
