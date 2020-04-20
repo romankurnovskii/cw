@@ -15,6 +15,12 @@ public class JoinStringsPerformanceTestAppl {
 		System.out.println("\nstart with JoinStringsImplString \n");
 		JoingStringsPerformance ob2 = new JoingStringsPerformance("test2", 10000, 500, new JoinStringsImplString());
 		ob2.run();
+		
+		
+		
+	
+		
+		
 
 	}
 

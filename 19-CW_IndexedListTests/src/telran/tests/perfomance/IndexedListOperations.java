@@ -1,5 +1,7 @@
 package telran.tests.perfomance;
 
+import java.util.Random;
+
 import telran.util.IndexedList; // from 08 
 
 public class IndexedListOperations extends PerfomanceTest {
@@ -35,7 +37,17 @@ public class IndexedListOperations extends PerfomanceTest {
 	}
 
 	private void runGetRandomIndex() {
-		this.list.get(0); // TODO each time index should be generated
+		
+//		int rand = (int) (Math.random() * this.nNumbers);
+		
+		Random random = new Random();
+		int rand = random.ints(0, this.nNumbers)
+	      .findFirst()
+	      .getAsInt();
+	    
+		
+		this.list.get(rand); // TODO each time index should be generated
+		
 	}
 
 }
