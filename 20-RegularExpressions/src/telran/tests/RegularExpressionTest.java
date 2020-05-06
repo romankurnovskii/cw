@@ -89,9 +89,22 @@ class RegularExpressionTest {
 		assertFalse("2.5 +8/2".matches(OperatorExpressions()));
 		assertFalse("2*5 +8#2".matches(OperatorExpressions()));
 		
-		
-                       
-                       
+            
+	}
+	
+	
+	@Test
+	void testEmail() {
+		assertTrue("tt%2@mail.ru".matches(EmailRegex()));
+		assertTrue("tt_67@co.il.d-d.a-a".matches(EmailRegex()));
+		assertTrue("tt_67@co.il.d-d.a-a".matches(EmailRegex()));
+		assertTrue("t5&4_s@ff.gt".matches(EmailRegex()));
+
+		assertFalse("yu ra@gmail.com".matches(EmailRegex())); // space is disallowed
+		assertFalse("yu,ra@gmail.com".matches(EmailRegex())); // comma is disallowed
+		assertFalse("tt%2@ma_il.ru".matches(EmailRegex())); // underscore is disallowed in a domain according to initial RFC
+		assertFalse("tt_67@co.il.dd.aa.bb".matches(EmailRegex())); // domain can’t comprise of more than 4 parts according to initial RFC
+		assertFalse("t5&4_s@ffgt".matches(EmailRegex())); // domain should have at least two parts separated by the dot
 	}
 	
 	

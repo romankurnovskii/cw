@@ -31,7 +31,13 @@ public class RegularExpression {
 	}
 	
 	static public String OperatorExpressions() {
-		return "(([0-9])+\\*|\\+|\\-|\\/\\s+([0-9])+)|([0-9])+";
+		return "^\\d+\\s?(([-+\\/\\*]\\s?\\d+\\s?)?){0,5}";
 	}
-//d
+	
+	static public String EmailRegex() {
+		return "^\\d+\\s?(([-+\\/\\*]\\s?\\d+\\s?)?){0,5}";
+	}
+	
+	
+
 }
