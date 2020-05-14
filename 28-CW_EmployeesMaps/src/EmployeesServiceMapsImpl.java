@@ -1,151 +1,179 @@
+
+
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-
 public class EmployeesServiceMapsImpl implements EmployeesService {
-
-	public EmployeesServiceMapsImpl() {
-		super();
-		this.employees = new HashMap<>();
-		this.employeesCompany = new HashMap<>();
-		this.employeesAge = new TreeMap<>();
-		this.employeesSalary = new TreeMap<>();
-	}
-
-	private HashMap<Long, Employee> employees;
-
+private HashMap<Long, Employee> employees = new HashMap<>();
 //key-company, value-list of employees working for that company
-	private HashMap<String, List<Employee>> employeesCompany;
-
+private HashMap<String, List<Employee>> employeesCompany = new HashMap<>();
+/**************************************************/
 //key - age, value - list of employees with that age
-	private TreeMap<Integer, List<Employee>> employeesAge;
-
+private TreeMap<Integer, List<Employee>> employeesAge = new TreeMap<>();
+/*****************************************************/
 //key - salary, value - list of employees with that salary
-	private TreeMap<Integer, List<Employee>> employeesSalary;
+private TreeMap<Integer, List<Employee>> employeesSalary = new TreeMap<>();
+/******************************************************/
 
-	
-	
-	/*
-	 *  ****** ADDS
-	 */
-	
 	@Override
 	public EmployeesReturnCodes addEmployee(Employee empl) {
 		Employee res = employees.putIfAbsent(empl.getId(), empl);
-
-		employees.putIfAbsent(empl.getId(), empl);
-
 		if (res != null) {
 			return EmployeesReturnCodes.EMPLOYEE_ALREADY_EXISTS;
 		}
-
-		addEmployeeCompany(empl);
-		addEmployeeAge(empl);
 		addEmployeeSalary(empl);
-
+		addEmployeeAge(empl);
+		addEmployeeCompany(empl);
 		return EmployeesReturnCodes.OK;
 	}
 
 	private void addEmployeeCompany(Employee empl) {
-		String company = empl.getCompany();
-		List<Employee> listEmployeesCompany = employeesCompany.getOrDefault(company, new ArrayList<>());
-		listEmployeesCompany.add(empl);
-		employeesCompany.putIfAbsent(company, listEmployeesCompany);
-
-	}
+	String company = empl.getCompany();
+	List<Employee> listEmployeesCompany =
+			employeesCompany.getOrDefault(company, new ArrayList<>());
+	listEmployeesCompany.add(empl);
+	employeesCompany.putIfAbsent(company, listEmployeesCompany);
+	
+}
 
 	private void addEmployeeAge(Employee empl) {
-		int age = LocalDate.now().getYear() - empl.getBirthYearDate().getYear();
-		List<Employee> listEmployeesAge = employeesAge.getOrDefault(age, new ArrayList<>());
+		int age = getAge(empl.getBirthYear());
+		List<Employee> listEmployeesAge =
+				employeesCompany.getOrDefault(age, new ArrayList<>());
+		listEmployeesAge.add(empl);
 		employeesAge.putIfAbsent(age, listEmployeesAge);
+	
+}
 
+	private int getAge(LocalDate birthDate) {
+		
+		return (int) ChronoUnit.YEARS.between(birthDate, LocalDate.now());
 	}
 
 	private void addEmployeeSalary(Employee empl) {
 		int salary = empl.getSalary();
-		List<Employee> listEmployeesSalary = employeesSalary.getOrDefault(salary, new ArrayList<>());
+		List<Employee> listEmployeesSalary =
+				employeesSalary.getOrDefault(salary, new ArrayList<>());
+		listEmployeesSalary.add(empl);
 		employeesSalary.putIfAbsent(salary, listEmployeesSalary);
+	
+}
 
-	}
-
-	
-	/*
-	 *  ****** REMOVES
-	 */
-	
-	
 	@Override
 	public EmployeesReturnCodes removeEmployee(long id) {
-		if (employees.containsKey(id)) {
-			employees.remove(id);
-			return EmployeesReturnCodes.OK;
+		Employee empl = employees.remove(id);
+		if (empl == null) {
+			return EmployeesReturnCodes.EMPLOYEE_NOT_FOUND;
 		}
-		else {
-			return EmployeesReturnCodes.EMPLOYEE_REMOVE_FAILED;
-		}
+		removeFromIndexMaps(empl);
 		
+		
+		return EmployeesReturnCodes.OK;
+	}
 
+	private void removeFromIndexMaps(Employee empl) {
+		removeFromCompanies(empl);
+		removeFromAgies(empl);
+		removeFromSalaries(empl);
+	}
+
+	private void removeFromSalaries(Employee empl) {
+		int salary = empl.getSalary();
+		List<Employee> list = employeesSalary.get(salary);
+		list.remove(empl);
+		if (list.isEmpty()) {
+			employeesSalary.remove(salary);
+		}
 		
 	}
 
-	
-	/*
-	 *  ****** GETS
-	 */
-	
-	
+	private void removeFromAgies(Employee empl) {
+		int age = getAge(empl.getBirthYear());
+		List<Employee> list = employeesAge.get(age);
+		list.remove(empl);
+		if (list.isEmpty()) {
+			employeesAge.remove(age);
+		}
+		
+	}
+
+	private void removeFromCompanies(Employee empl) {
+		String company = empl.getCompany();
+		List<Employee> list = employeesCompany.get(company);
+		list.remove(empl);
+		if (list.isEmpty()) {
+			employeesCompany.remove(company);
+		}
+		
+	}
+
 	@Override
 	public Employee getEmployee(long id) {
-		return employees.get(id); 
+		
+		return employees.get(id);
 	}
 
 	@Override
 	public Iterable<Employee> getEmployees() {
+		
 		return employees.values();
 	}
 
 	@Override
 	public Iterable<Employee> getEmployeesCompany(String company) {
-
+		
 		return employeesCompany.getOrDefault(company, new ArrayList<>());
 	}
 
 	@Override
 	public Iterable<Employee> getEmployeesAges(int ageFrom, int ageTo) {
+		Collection<List<Employee>> listsEmployees = 
+				employeesAge.subMap(ageFrom, true, ageTo, true).values();
+		return toListEmployees(listsEmployees);
+	}
 
-		return (Iterable<Employee>) employeesAge.subMap(ageFrom, ageTo);
+	private Iterable<Employee> toListEmployees(Collection<List<Employee>> listsEmployees) {
+		List<Employee> res = new ArrayList<>();
+		for(List<Employee> list: listsEmployees) {
+			res.addAll(list);
+		}
+		return res;
 	}
 
 	@Override
-	public Iterable<Employee> getEmployeesSalary(int salaryFrom, int SalaryTo) {
-
-		return new Iterable<Employee>() {
-
-			@SuppressWarnings("unchecked")
-			public Iterator<Employee> iterator() {
-				return (Iterator<Employee>) employeesSalary.entrySet().stream()
-						.filter(empl -> empl.getKey() >= salaryFrom && empl.getKey() <= SalaryTo)
-						.collect(Collectors.toMap(empl -> empl.getKey(), empl -> empl.getValue()));
-			}
-		};
+	public Iterable<Employee> getEmployeesSalary(int salaryFrom, int salaryTo) {
+		Collection<List<Employee>> listsEmployees = 
+				employeesSalary.subMap(salaryFrom, true, salaryTo, true).values();
+		return toListEmployees(listsEmployees);
 	}
-
-	
-	/*
-	 *  ****** UPDATES
-	 */
-	
+private Employee getBeingUpdated(long id) {
+	Employee empl = employees.remove(id);
+	if (empl != null) {
+		removeFromIndexMaps(empl);
+	}
+	return empl;
+}
 	@Override
-	public EmployeesReturnCodes updateCompany(long id, String company) {
-//TODO
-		return getEmployee(id).getCompany() == company ? EmployeesReturnCodes.SAME_COMPANY : EmployeesReturnCodes.OK;
-
+	public EmployeesReturnCodes updateCompany(long id, String newCompany) {
+		 
+		Employee empl = getBeingUpdated(id);
+		if (empl == null) {
+			return EmployeesReturnCodes.EMPLOYEE_NOT_FOUND;
+		}
+		addEmployee(new Employee(id, empl.getSalary(),
+				newCompany, empl.getBirthYear(), empl.getName()));
+		return EmployeesReturnCodes.OK;
 	}
 
 	@Override
 	public EmployeesReturnCodes updateSalary(long id, int newSalary) {
-//TODO
-		return getEmployee(id).getSalary() == newSalary ? EmployeesReturnCodes.SAME_SALARY : EmployeesReturnCodes.OK;
+		Employee empl = getBeingUpdated(id);
+		if (empl == null) {
+			return EmployeesReturnCodes.EMPLOYEE_NOT_FOUND;
+		}
+		addEmployee(new Employee(id, newSalary,
+				empl.getCompany(), empl.getBirthYear(), empl.getName()));
+		return EmployeesReturnCodes.OK;
 	}
 
 }

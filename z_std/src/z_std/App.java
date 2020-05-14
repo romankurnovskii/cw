@@ -29,14 +29,21 @@ public class App {
 		 
 		 } 
 	
-
 		 for (i = 0; i < a.length; i++) {
-			 System.out.print(a[i] + " ");
+//			 System.out.print(a[i] + " ");
 		 }
 		 
 		
 	
 	
+		 
+		 Thread t = Thread.currentThread();
+
+
+		 t.setName("my-thread");
+		 t.setPriority(5);
+		 
+	        System.out.println("name: " + t.getName() + "\npriority: " + t.getPriority());
 
 		
 		
