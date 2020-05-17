@@ -48,6 +48,7 @@ public class WordCountsTestAppl {
 
 	private static HashMap<String, Integer> getMapCounts(String[] words) {
 		HashMap<String, Integer> res = new HashMap<>();
+		
 		for(String word: words) {
 			Integer count = res.getOrDefault(word, 0);
 			res.put(word, count + 1);
