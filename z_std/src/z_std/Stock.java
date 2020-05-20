@@ -2,6 +2,7 @@ package z_std;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class Stock {
 
@@ -31,36 +32,38 @@ public class Stock {
 	
 	
 	
-//	public static void main(String[] args)
-//	{
-//		int[] prices = {1, 4, 4, 6, 4, 10};
-//		int operations = 3;
-//
-//		System.out.println(calculateProfit(prices, operations));
-//	}
-//
-//	private static int calculateProfit(int[] prices, int operations)
-//	{
-//		if (prices.length < 2) {
-//			return 0;
-//		}
-//
-//		return calculateProfit(prices, true, 0, operations * 2);
-//	}
-//
-//	private static int calculateProfit(int[] prices, boolean buy, int index, int operations)
-//	{
-//		if (operations < 1 || index >= prices.length) {
-//			return 0;
-//		}
-//
-//		int profit = (buy ? -1 : 1) * prices[index];
-//
-//		int operationDone = profit + calculateProfit(prices, !buy, index + 1, operations - 1);
-//		int operationSkipped = calculateProfit(prices, buy, index + 1, operations);
-//
-//		return Math.max(operationDone, operationSkipped);
-//	}
+	public static void main(String[] args)
+	{
+		int[] prices = new Random().ints(35, 1, 23).toArray();
+		
+		//int[] prices = {1, 4, 4, 6, 4, 10};
+		int operations = 30;
+
+		System.out.println(calculateProfit(prices, operations));
+	}
+
+	private static int calculateProfit(int[] prices, int operations)
+	{
+		if (prices.length < 2) {
+			return 0;
+		}
+
+		return calculateProfit(prices, true, 0, operations * 2);
+	}
+
+	private static int calculateProfit(int[] prices, boolean buy, int index, int operations)
+	{
+		if (operations < 1 || index >= prices.length) {
+			return 0;
+		}
+
+		int profit = (buy ? -1 : 1) * prices[index];
+
+		int operationDone = profit + calculateProfit(prices, !buy, index + 1, operations - 1);
+		int operationSkipped = calculateProfit(prices, buy, index + 1, operations);
+
+		return Math.max(operationDone, operationSkipped);
+	}
 
 }
 
