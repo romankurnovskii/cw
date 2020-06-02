@@ -6,40 +6,23 @@ import java.util.Random;
 
 public class Stock {
 
-//	public static void main(String[] args) {
-//		int t =  2;
-//		int[] p = {10, 22, 5, 75, 65, 80};
-//		
-//		ArrayList<Integer> max;
-//		for (int i : p) {
-//			
-//		}
-//		
-//		
-//		
-//		
-//
-//	}
-//	
-//	
-//	class Maximums {
-//		int id;
-//		int min;
-//		int max;
-//		
-//	}
-	
-	
+
 	
 	
 	public static void main(String[] args)
 	{
-		int[] prices = new Random().ints(35, 1, 23).toArray();
+		int[] prices = new Random().ints(40, 1, 23).toArray();
 		
 		//int[] prices = {1, 4, 4, 6, 4, 10};
-		int operations = 30;
+		int operations = 10;
 
 		System.out.println(calculateProfit(prices, operations));
+		
+		
+		// better realization
+		System.out.print("\nTotal profit earned is " + maxProfit(prices));
+		
+		
 	}
 
 	private static int calculateProfit(int[] prices, int operations)
@@ -64,6 +47,44 @@ public class Stock {
 
 		return Math.max(operationDone, operationSkipped);
 	}
+	
+	
+	
+	
+	
+		// Function to find maximum profit that can be earned by buying and
+		// selling shares any number of times
+		public static int maxProfit(int[] price)
+		{
+			// store maximum profit gained
+			int profit = 0;
+
+			// initialize local minimum to first element's index
+			int j = 0;
+
+			// start from second element
+			for (int i = 1; i < price.length; i++)
+			{
+				// update local minimum if decreasing sequence is found
+				if (price[i - 1] > price[i]) {
+					j = i;
+				}
+
+				// sell shares if current element is peak
+				// i.e. (previous <= current > next)
+				if (price[i - 1] <= price[i] &&
+					(i + 1 == price.length || price[i] > price[i + 1]))
+				{
+					profit += (price[i] - price[j]);
+					System.out.printf("Buy on day %d and sell on day %d\n", j + 1, i + 1);
+				}
+			}
+
+			return profit;
+		}
+
+	
+	
 
 }
 

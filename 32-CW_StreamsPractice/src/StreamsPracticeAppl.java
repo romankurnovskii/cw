@@ -26,7 +26,9 @@ public class StreamsPracticeAppl {
 	}
 
 	private static void displayNumbersGroupedByDigitsAmount(int[] array) {
-		Map<Integer, List<Integer>> map = Arrays.stream(array).boxed().collect(Collectors.groupingBy(n -> Integer.toString(n).length()));
+		Map<Integer, List<Integer>> map = Arrays.stream(array).
+				boxed().
+				collect(Collectors.groupingBy(n -> Integer.toString(n).length()));
 		
 		System.out.println(map);
 		
