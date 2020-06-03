@@ -1,6 +1,5 @@
-package telran.tests.performance;
-
-import telran.util.files.ICopyFiles;
+package tests.performance;
+import util.files.ICopyFiles;
 
 public class PerformanceCopyFiles extends PerformanceTest {
 ICopyFiles copyFiles;

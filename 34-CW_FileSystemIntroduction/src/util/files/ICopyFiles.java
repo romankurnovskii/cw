@@ -1,4 +1,4 @@
-package telran.util.files;
+package util.files;
 
 public interface ICopyFiles {
 void copy (String sourceFile, String destFile);

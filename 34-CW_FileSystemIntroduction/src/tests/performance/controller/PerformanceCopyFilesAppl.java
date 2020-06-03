@@ -1,8 +1,8 @@
-package telran.tests.performance.controller;
+package tests.performance.controller;
 
-import telran.tests.performance.PerformanceCopyFiles;
-import telran.util.files.CopyFilesJava;
-import telran.util.files.CopyFilesStreams;
+import tests.performance.PerformanceCopyFiles;
+import util.files.CopyFilesJava;
+import util.files.CopyFilesStreams;
 
 public class PerformanceCopyFilesAppl {
 
@@ -17,6 +17,9 @@ public class PerformanceCopyFilesAppl {
 			(int)Runtime.getRuntime().freeMemory()
 				
 		};
+		
+		
+		
 		new PerformanceCopyFiles
 		("Java standard copy", 1, new CopyFilesJava(), SOURCE_FILE, DEST_FILE).run();
 		for (int size: sizes) {

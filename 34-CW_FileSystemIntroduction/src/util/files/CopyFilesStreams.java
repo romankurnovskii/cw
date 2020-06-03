@@ -1,4 +1,6 @@
-package telran.util.files;
+package util.files;
+
+
 import java.io.*;
 public class CopyFilesStreams implements ICopyFiles {
 int bufferSize;

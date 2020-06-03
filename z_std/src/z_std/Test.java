@@ -19,9 +19,10 @@ public class Test {
 
       System.out.println(Arrays.toString(line));
     	
-      System.out.println(scanner.nextLine());
 
     	
+      System.out.println((int)Runtime.getRuntime().freeMemory());
+      
     	
     }
 }

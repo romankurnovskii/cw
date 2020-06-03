@@ -1,4 +1,5 @@
-package telran.tests.performance;
+package tests.performance;
+
 
 public abstract class PerformanceTest {
 protected String name;

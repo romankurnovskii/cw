@@ -1,4 +1,6 @@
-package telran.util.files;
+package util.files;
+
+
 import java.io.IOException;
 import java.nio.file.*;
 public class CopyFilesJava implements ICopyFiles {
