@@ -25,6 +25,13 @@ public class Stock {
 		
 	}
 
+	
+	
+/* 
+ * 
+ * 	
+ */
+	
 	private static int calculateProfit(int[] prices, int operations)
 	{
 		if (prices.length < 2) {
@@ -51,6 +58,13 @@ public class Stock {
 	
 	
 	
+	
+	
+	
+	/* 
+	 * 
+	 * 	
+	 */	
 	
 		// Function to find maximum profit that can be earned by buying and
 		// selling shares any number of times
