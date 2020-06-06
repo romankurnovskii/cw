@@ -3,11 +3,9 @@ package telran.games.impl;
 import telran.games.interfaces.GuessGame;
 import java.net.*;
 import java.io.*;
-
-
 public class GameTcpProxy implements GuessGame {
 	public GameTcpProxy(String host, int port) {
-
+		
 		this.host = host;
 		this.port = port;
 	}
@@ -17,6 +15,7 @@ public class GameTcpProxy implements GuessGame {
 	PrintStream writer;
 	String host;
 	int port;
+	
 
 	@Override
 	public String startGame() {
@@ -34,14 +33,14 @@ public class GameTcpProxy implements GuessGame {
 
 	@Override
 	public String prompt() {
-		return getResponse("prompt", "");
+		return getResponse("prompt","");
 	}
 
-	private String getResponse(String headers, String payload) {
+	private String getResponse(String headers, String payload ) {
 		writer.println(headers + "#" + payload);
 		try {
 			String res = reader.readLine();
-			if (res.contains("Unknown")) {
+			if(res.contains("Unknown")) {
 				throw new RuntimeException(headers + "..." + "Unknown request");
 			}
 			return res;
@@ -52,7 +51,7 @@ public class GameTcpProxy implements GuessGame {
 
 	@Override
 	public String move(String userInput) {
-
+		
 		return getResponse("move", userInput);
 	}
 

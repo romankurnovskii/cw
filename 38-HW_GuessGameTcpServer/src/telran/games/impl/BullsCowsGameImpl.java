@@ -54,6 +54,7 @@ public class BullsCowsGameImpl implements GuessGame {
 
 	@Override
 	public boolean isFinished() {
+		
 		return isFinished;
 	}
 

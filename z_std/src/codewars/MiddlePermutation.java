@@ -1,4 +1,4 @@
-package z_std;
+package codewars;
 
 import java.math.BigInteger;
 import java.util.Arrays;
