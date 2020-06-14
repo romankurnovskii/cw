@@ -2,15 +2,16 @@ import telran.menu.InputOutput;
 import telran.menu.Item;
 
 public class CalculatorItem implements Item {
-public CalculatorItem(InputOutput inputOutput) {
+	public CalculatorItem(InputOutput inputOutput) {
 		super();
 		this.inputOutput = inputOutput;
 	}
 
-InputOutput inputOutput;
+	InputOutput inputOutput;
+
 	@Override
 	public String displayName() {
-		
+
 		return "Divide two numbers";
 	}
 

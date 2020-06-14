@@ -3,7 +3,8 @@ package telran.menu;
 import java.util.Scanner;
 
 public class ConsoleInputOutput implements InputOutput {
-Scanner scanner = new Scanner(System.in);
+	Scanner scanner = new Scanner(System.in);
+
 	@Override
 	public String inputString(String prompt) {
 		displayLine(prompt);

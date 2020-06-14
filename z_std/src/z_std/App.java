@@ -18,6 +18,9 @@ public class App {
 		Application2 application2 = new Application2();
 		
 		System.out.println("done");
+		
+		int aa = new int[4][8].length;
+		System.out.println(aa);
 
 
 	}
