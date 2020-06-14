@@ -1,5 +1,6 @@
 package telran.menu;
 
+import java.time.LocalDate;
 import java.util.function.Function;
 
 public interface InputOutput {
@@ -32,7 +33,25 @@ public interface InputOutput {
 		});
 	}
 
+	default Integer inputInteger(String prompt) {
+		String str = "It is not a number";
+		Integer res = inputObject(prompt, str, s -> {
+			return Integer.parseInt(s);
+		});
+		return res;
+	}
+
 	default void displayLine(Object obj) {
 		display(obj.toString() + "\n");
 	}
+
+	default LocalDate inputDate(String prompt) {
+		String str = "Wrong date";
+		LocalDate res = inputObject(prompt, str, e -> {
+			return LocalDate.parse(e);
+		});
+
+		return res;
+	}
+
 }

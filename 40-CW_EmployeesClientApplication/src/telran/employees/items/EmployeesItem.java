@@ -7,8 +7,9 @@ import telran.menu.Item;
 public abstract class EmployeesItem implements Item {
 
 	
-	protected EmployeesService employees;
-	protected InputOutput inputOutput;
+	 EmployeesService employees;
+	 InputOutput inputOutput;
+	
 	public EmployeesItem(EmployeesService employees, InputOutput inputOut) {
 		super();
 		this.employees = employees;
@@ -16,3 +17,6 @@ public abstract class EmployeesItem implements Item {
 	}
 
 }
+
+
+

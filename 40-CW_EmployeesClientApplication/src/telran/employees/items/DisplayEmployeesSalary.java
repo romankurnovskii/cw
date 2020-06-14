@@ -7,12 +7,12 @@ public class DisplayEmployeesSalary extends EmployeesItem {
 
 	public DisplayEmployeesSalary(EmployeesService employees, InputOutput inputOut) {
 		super(employees, inputOut);
-		
+
 	}
 
 	@Override
 	public String displayName() {
-		
+
 		return "Display all employees with a given salary";
 	}
 
