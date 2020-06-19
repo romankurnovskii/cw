@@ -1,8 +1,15 @@
 package telran.employees.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Employee {
+public class Employee implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8303723070828694063L;
+	
+	
 	private long id;
 	private int salary;
 	private String company;

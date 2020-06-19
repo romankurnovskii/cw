@@ -8,14 +8,12 @@ import telran.games.interfaces.GuessGame;
 public class BullsCowsGameImpl implements GuessGame {
 	private Character[] number;
 	private boolean isFinished;
- 
-	
 
 	private void generateNumber() {
-	number = new Random().ints('1', '9'+1).distinct()
-				.limit(4).mapToObj(n -> (char)n).toArray(Character[]::new);
-				
+		number = new Random().ints('1', '9' + 1).distinct().limit(4).mapToObj(n -> (char) n).toArray(Character[]::new);
+
 	}
+
 	@Override
 	public String startGame() {
 		isFinished = false;
@@ -25,17 +23,16 @@ public class BullsCowsGameImpl implements GuessGame {
 
 	@Override
 	public String prompt() {
-		
 		return "Enter number of 4 unrepeated digits [1-9]";
 	}
 
 	@Override
 	public String move(String userInput) {
-		Integer bulls=0;
-		Integer cows=0;
+		Integer bulls = 0;
+		Integer cows = 0;
 		int length = userInput.length();
-		int limit= length < 4?length:4;
-		for(int i=0;i<limit;i++){
+		int limit = length < 4 ? length : 4;
+		for (int i = 0; i < limit; i++) {
 			int index = userInput.indexOf(number[i]);
 			if (index >= 0) {
 				if (index == i) {
@@ -43,7 +40,7 @@ public class BullsCowsGameImpl implements GuessGame {
 				} else {
 					cows++;
 				}
-				
+
 			}
 		}
 		if (bulls == 4) {
@@ -54,7 +51,7 @@ public class BullsCowsGameImpl implements GuessGame {
 
 	@Override
 	public boolean isFinished() {
-		
+
 		return isFinished;
 	}
 

@@ -1,5 +1,6 @@
 package telran.employees.service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -13,13 +14,11 @@ public class EmployeesTcpProxy extends TcpClientJava implements EmployeesService
 
 	public EmployeesTcpProxy(String hostname, int port) {
 		super(hostname, port);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public EmployeesReturnCodes addEmployee(Employee empl) {
-		// TODO Auto-generated method stub
-		return null;
+		return sendRequest("ADD", (Serializable) empl);
 	}
 
 	@Override

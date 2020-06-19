@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class ResponseJava implements Serializable {
 
 	public ResponseJava(TcpResponseCode code, Serializable responseData) {
-		super();
 		this.code = code;
 		this.responseData = responseData;
 	}
@@ -18,3 +17,5 @@ public class ResponseJava implements Serializable {
 	
 
 }
+
+

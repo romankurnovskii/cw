@@ -1,7 +1,10 @@
 package z_std;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +16,22 @@ public class Test {
 	public static void main(String args[]) {
 
 		Scanner scanner = new Scanner(System.in);
+		System.out.println(0.1 + 0.2);
 		
 		test("abfbdkfsgkldfjglknsddsjfiejrjifudflab");
+		
+		BigDecimal aBigDecimal = new BigDecimal(5);
+		
+		aBigDecimal.setScale(6);
+		System.out.println(aBigDecimal.setScale(25));
+		
+		Date aDate = new Date();
+		LocalDate localDate;
 
+		String aString = "dsfsF";
+		aString.toLowerCase();
+		
+		
 	}
 	
 	
