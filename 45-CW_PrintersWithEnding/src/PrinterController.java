@@ -1,15 +1,17 @@
 import java.util.Scanner;
 
 public class PrinterController {
+	
+
 
 	public static void main(String[] args) {
-		String[] strings = {"Hello", "Java", "12345"};
+		String[] strings = { "Hello", "Java", "12345" };
 		Printer[] printers = new Printer[strings.length];
 		startPrinters(printers, strings);
-		
+
 		Scanner scanner = new Scanner(System.in);
 		String line = null;
-		while(true) {
+		while (true) {
 			line = scanner.nextLine();
 			if (line.equals("q")) {
 				break;
@@ -22,7 +24,6 @@ public class PrinterController {
 			printers[threadIndex].interrupt();
 		}
 		finishAllThreads(printers);
-		
 
 	}
 
@@ -40,17 +41,17 @@ public class PrinterController {
 	}
 
 	private static void finishAllThreads(Printer[] printers) {
-		for (Printer printer: printers) {
+		for (Printer printer : printers) {
 			printer.setRunning(false);
 		}
 	}
 
 	private static void startPrinters(Printer[] printers, String[] strings) {
-		for(int i = 0; i < printers.length; i++) {
+		for (int i = 0; i < printers.length; i++) {
 			printers[i] = new Printer(strings[i]);
 			printers[i].start();
 		}
-		
+
 	}
 
 }
