@@ -4,7 +4,7 @@ public class Printer extends Thread {
 	public int nNumbers;
 	public int printNumber;
 	volatile boolean running = true;
-	volatile String linePrint;
+	String linePrint;
 
 	public boolean isRunning() {
 		return running;
@@ -23,14 +23,28 @@ public class Printer extends Thread {
 	@Override
 	public void run() {
 
-		print(printNumber);
+		while (true) {
+			firstSleep();
+		}
+
+	}
+
+	private void firstSleep() {
+
+		try {
+			this.sleep(Integer.MAX_VALUE);
+
+		} catch (InterruptedException e) {
+			print(printNumber);
+		}
 
 	}
 
 	private void print(int number) {
-		int count = nPortions;
 
-		while (count > 0) {
+		int count = nPortions;
+		if (count > 0) {
+
 			if (nPortions > nNumbers - nPortions) {
 				count = nNumbers - nPortions;
 			}
@@ -40,13 +54,9 @@ public class Printer extends Thread {
 			}
 			System.out.println(linePrint);
 			nNumbers -= nPortions;
-			try {
-				sleep(2000);
-			} catch (InterruptedException e) {
-				System.out.println("inter");
-			}
 
 		}
+
 	}
 
 }

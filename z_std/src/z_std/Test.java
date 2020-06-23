@@ -13,25 +13,16 @@ import java.util.concurrent.CountDownLatch;
 
 public class Test {
 
+	private static String[] order = {"0", "1", "2", "3"};
+	
 	public static void main(String args[]) {
 
-		Scanner scanner = new Scanner(System.in);
-		System.out.println(0.1 + 0.2);
 		
-		test("abfbdkfsgkldfjglknsddsjfiejrjifudflab");
+		int index=0;
 		
-		BigDecimal aBigDecimal = new BigDecimal(5);
+		System.out.println(order[index++]);
 		
-		aBigDecimal.setScale(6);
-		System.out.println(aBigDecimal.setScale(25));
-		
-		Date aDate = new Date();
-		LocalDate localDate;
-
-		String aString = "dsfsF";
-		aString.toLowerCase();
-		
-		
+//		5 3 50 100 80 120 80
 	}
 	
 	
