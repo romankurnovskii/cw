@@ -1,4 +1,4 @@
-package z_std;
+
 
 import java.math.BigInteger;
 import java.util.Scanner;

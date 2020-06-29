@@ -1,4 +1,4 @@
-package z_std;
+
 
 public class Application1 {
 	

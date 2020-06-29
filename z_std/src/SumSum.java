@@ -1,87 +1,66 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Va {
 
 	public static void main(String[] args) {
-
 		Scanner scanner = new Scanner(System.in);
-		int length = Integer.parseInt(scanner.nextLine());
+		int length1 = Integer.parseInt(scanner.nextLine());
 
 		String numbers = scanner.nextLine();
 
-		int quantity = Integer.parseInt(scanner.nextLine());
+		SumSum sussm = new SumSum(numbers);
 
-		String[] numbersForChange = new String[quantity];
+		int length2 = Integer.parseInt(scanner.nextLine());
 
-		for (int i = 0; i < quantity; i++) {
-			numbersForChange[i] = scanner.nextLine();
+		sussm.run(length2, scanner);
 
-		}
-
-		SumSum sussm = new SumSum(length, numbers, quantity, numbersForChange);
 
 	}
 
 }
 
 public class SumSum {
-	
+
 	public static void main(String[] args) {
 		Va.main(null);
 	}
 
 	private String[] array;
-	private long[] arrayNumbers = new long[100001];
-	private String[] numbersForChange;
+	private int[] arrayNumbers = new int[100001];
 	private long sum;
-	StringBuilder stringBuilder = new StringBuilder();
+	StringBuilder sb = new StringBuilder();
 
-	public SumSum(int length, String numbers, int quantity, String... numbersForChange) {
+	public SumSum(String numbers) {
 		this.array = numbers.split(" ");
-		this.numbersForChange = numbersForChange;
-		run();
+		createIntArray();
 	}
 
-	public void run() {
-//		long[] res = new long[numbersForChange.length];
-		createIntArray();
-		String[] twoNumber;
-		long[] twoIntNumber = new long[2];
-//		int i = 0;
-		for (String s : numbersForChange) {
-			twoNumber = s.split(" ");
-			twoIntNumber[0] = Integer.parseInt(twoNumber[0]);
+	public void run(int length, Scanner scanner) {
+		for (int i = 0; i < length; i++) {
+			int oldNumber = scanner.nextInt();
+			int newNumber = scanner.nextInt();
 
-			twoIntNumber[1] = Integer.parseInt(twoNumber[1]);
-			long n = arrayNumbers[(int) twoIntNumber[0]];
-			if (n == 0) {
-//				res[i] = sum;
-
-//				System.out.println(sum);
-				stringBuilder.append(sum +"\n");
-//				i++;
+			int quantity = arrayNumbers[oldNumber];
+			if (quantity == 0) {
+				sb.append(sum).append("\n");
 				continue;
 			}
 
-			long ss = twoIntNumber[1] - twoIntNumber[0];
-			sum += ss * n;
-
-//			sum -= twoIntNumber[0] * n;
-			arrayNumbers[(int) twoIntNumber[0]] = 0;
-			arrayNumbers[(int) twoIntNumber[1]] += n;
-//			sum += twoIntNumber[1] * n;
-//			res[i] = sum;
-
-//			System.out.println(sum);
-			stringBuilder.append(sum +"\n" );
-
-//			i++;
+			int difference = newNumber - oldNumber;
+			sum += (difference * quantity);
+			sb.append(sum).append("\n");
+			arrayNumbers[oldNumber] = 0;
+			arrayNumbers[newNumber] += quantity;
 		}
 
-		System.out.println(stringBuilder.toString());
-	
+		System.out.println(sb.toString());
 	}
 
 	private void createIntArray() {
