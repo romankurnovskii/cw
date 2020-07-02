@@ -3,9 +3,9 @@ import java.time.temporal.ChronoUnit;
 
 public class FarmAppl {
 
-	private static final int N_TRUCKS = 1000;
-	private static final int LOAD = 1;
-	private static final int N_LOADS = 10000;
+	private static final int N_TRUCKS = 100;
+	private static final int LOAD = 5;
+	private static final int N_LOADS = 1000;
 
 	public static void main(String[] args) {
 		Truck [] trucks = new Truck[N_TRUCKS];
@@ -19,6 +19,14 @@ public class FarmAppl {
 
 	}
 
+	private static void startTrucks(Truck[] trucks) {
+		for (int i = 0; i < trucks.length; i++) {
+			trucks[i] = new Truck(LOAD, N_LOADS);
+			trucks[i].start();
+		}
+		
+	}
+	
 	private static void waitingForFinish(Truck[] trucks) {
 		for(Truck truck: trucks) {
 			try {
@@ -30,12 +38,6 @@ public class FarmAppl {
 		
 	}
 
-	private static void startTrucks(Truck[] trucks) {
-		for (int i = 0; i < trucks.length; i++) {
-			trucks[i] = new Truck(LOAD, N_LOADS);
-			trucks[i].start();
-		}
-		
-	}
+	
 
 }
