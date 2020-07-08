@@ -1,37 +1,72 @@
 package telran.util;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.function.BinaryOperator;
+
 public class Calculator {
-static public double calculate(String expr) {
-	String[] operands = getOperands(expr);
-	String[] operations =getOperations(expr);
-	if (operands.length == 0 || operands.length != operations.length)
-		return Double.NaN;
-	double res = Double.parseDouble(operands[0]);
-	for (int i = 1; i < operands.length; i++) {
-		res = calculateOne(res, operands[i], operations[i]);
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Введите выражение");
+		Double resDouble;
+		resDouble = calculate(scanner.nextLine());
+		System.out.println(resDouble);
 	}
-	return res;
-}
 
-public static String[] getOperations(String expr) {
-	
-	return expr.split("[\\d ]+");
-}
+	private static final Map<String, BinaryOperator<Double>> map;
 
-public  static String[] getOperands(String expr) {
-	
-	return expr.trim().split("\\D+");
-}
-public static double calculateOne(double op1, String op2,
-		String operation) {
-	double op2Number = Double.parseDouble(op2);
-	switch(operation) {
-	case "+": return op1 + op2Number;
-	case "*": return op1 * op2Number;
-	case "-": return op1 - op2Number;
-	case "/": return op2Number == 0 ? Double.POSITIVE_INFINITY :
-		op1 / op2Number;
+	static {
+		map = new HashMap<>();
+
+		map.put("/", (value, number) -> value / number);
+		map.put("*", (value, number) -> value * number);
+		map.put("+", Double::sum);
+		map.put("-", (value, number) -> value - number);
 	}
-	return Double.NaN;
-}
+
+	static public double calculate(String expression) {
+		if (!expression.matches(RegularExpressions.arithmeticExpression())) {
+			return Double.NaN;
+		}
+
+		String[] numbers = expression.trim().split("[-+/* ]+");
+		String[] operations = expression.trim().split("[\\d. ]+");
+
+		double result = Double.parseDouble(numbers[0]);
+
+		for (int i = 1; i < numbers.length; i++) {
+			result = calculate(result, Double.parseDouble(numbers[i]), operations[i]);
+
+			if (Double.isNaN(result) || result == Double.POSITIVE_INFINITY) {
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	private static double calculate(double value, double number, String operation) {
+		return map.getOrDefault(operation, (v, n) -> Double.NaN).apply(value, number);
+	}
+
+	public static boolean checkParenthesis(String expression) {
+		// Подразумеваем, что в строке нет ничего, кроме скобок
+		expression = expression.replaceAll("[^()]", "");
+		if (expression.length() % 2 != 0) {
+			return false;
+		}
+
+		int balance = 0;
+		for (char value : expression.toCharArray()) {
+			if (value == '(') {
+				balance++;
+			}
+			if (value == ')' && --balance < 0) {
+				break;
+			}
+		}
+
+		return balance == 0;
+	}
 }
