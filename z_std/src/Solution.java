@@ -1,55 +1,51 @@
-import java.io.*;
-import java.util.*;
-
-class Node {
-	int data;
-	Node next;
-
-	Node(int d) {
-		data = d;
-		next = null;
-	}
-}
+import java.util.Scanner;
 
 class Solution {
+	static Scanner sc = new Scanner(System.in);
 
-	public static Node insert(Node head, int data) {
-		
-		
-		
-		Node node = new Node(data);
-		if (head == null) {
-			head = node;
+	public static void main(String[] args) {
+		while (true) {
+			isPowerOfFour(sc.nextInt());
+		}
+
+	}
+
+	static public boolean detectCapitalUse(String word) {
+
+		String a = sc.next();
+
+		if ((a.substring(1).equals(a.substring(1).toUpperCase()) || a.substring(1).equals(a.substring(1).toLowerCase()))
+				& a.substring(0, 1).equals(a.substring(0, 1).toUpperCase())) {
+			System.out.println(true);
 		} else {
-			Node current = head;
-			while (current.next != null) {
-	            current = current.next;
-	        }
-	        current.next = node;
+			System.out.println(false);
 		}
 
-		return head;
-
+		return false;
 	}
 
-	public static void display(Node head) {
-		Node start = head;
-		while (start != null) {
-			System.out.print(start.data + " ");
-			start = start.next;
+	static public boolean isPowerOfFour(int num) {
+		if (num == 1) {
+			return true;
 		}
-	}
-
-	public static void main(String args[]) {
-		Scanner sc = new Scanner(System.in);
-		Node head = null;
-		int N = sc.nextInt();
-
-		while (N-- > 0) {
-			int ele = sc.nextInt();
-			head = insert(head, ele);
+		if (num == 0) {
+			return false;
 		}
-		display(head);
-		sc.close();
+		if (num == 4) {
+			return true;
+		}
+
+		boolean res = false;
+		
+		double aaDouble = Math.log10(num) / Math.log10(4);
+		
+		if (aaDouble - (int) aaDouble == 0) {
+			res = true;
+		}
+		
+
+		System.out.println(res);
+		return res;
 	}
+
 }
